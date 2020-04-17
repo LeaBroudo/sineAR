@@ -49,7 +49,6 @@
 			//modifiedPos.y += sin(data.vertex.x * _Frequency + _Time.y * _AnimationSpeed) * _Amplitude;
 			modifiedPos.y += sin(data.vertex.x * _Frequency) * _Amplitude;
 
-
 			float3 posPlusTangent = data.vertex + data.tangent * 0.01;
 			//posPlusTangent.y += sin(posPlusTangent.x * _Frequency + _Time.y * _AnimationSpeed) * _Amplitude;
             posPlusTangent.y += sin(posPlusTangent.x * _Frequency) * _Amplitude;
