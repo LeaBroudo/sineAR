@@ -9,8 +9,8 @@
 		_Metallic ("Metalness", Range(0, 1)) = 0
 		[HDR] _Emission ("Emission", color) = (0,0,0)
 
-		_Amplitude ("Wave Size", Range(0,1)) = 0.4
-		_Frequency ("Wave Freqency", Range(1, 8)) = 2
+		_Amplitude ("Amplitude", Range(0,1)) = 1
+		_Frequency ("Frequency", Range(1, 8)) = 1
 		_AnimationSpeed ("Animation Speed", Range(0,5)) = 1
 	}
 	SubShader {
@@ -39,6 +39,9 @@
 		float _Frequency;
 		float _AnimationSpeed;
 
+		float _ParentArray[200];
+		float _ParentCount;
+
 		//input struct which is automatically filled by unity
 		struct Input {
 			float2 uv_MainTex;
@@ -47,17 +50,43 @@
 		void vert(inout appdata_full data){
 			float4 modifiedPos = data.vertex;
 			//modifiedPos.y += sin(data.vertex.x * _Frequency + _Time.y * _AnimationSpeed) * _Amplitude;
-			modifiedPos.y += sin(data.vertex.x * _Frequency) * _Amplitude;
+			//modifiedPos.y += sin(data.vertex.x * _Frequency) * _Amplitude;
 
 			float3 posPlusTangent = data.vertex + data.tangent * 0.01;
 			//posPlusTangent.y += sin(posPlusTangent.x * _Frequency + _Time.y * _AnimationSpeed) * _Amplitude;
-            posPlusTangent.y += sin(posPlusTangent.x * _Frequency) * _Amplitude;
+            //posPlusTangent.y += sin(posPlusTangent.x * _Frequency) * _Amplitude;
 
 
 			float3 bitangent = cross(data.normal, data.tangent);
 			float3 posPlusBitangent = data.vertex + bitangent * 0.01;
 			//posPlusBitangent.y += sin(posPlusBitangent.x * _Frequency + _Time.y * _AnimationSpeed) * _Amplitude;
-			posPlusBitangent.y += sin(posPlusBitangent.x * _Frequency) * _Amplitude;
+			//posPlusBitangent.y += sin(posPlusBitangent.x * _Frequency) * _Amplitude;
+
+			float pFreq, pAmpl;
+			if (_ParentCount == 0) {
+				modifiedPos.y += sin(data.vertex.x * _Frequency) * _Amplitude;
+				posPlusTangent.y += sin(posPlusTangent.x * _Frequency) * _Amplitude;
+				posPlusBitangent.y += sin(posPlusBitangent.x * _Frequency) * _Amplitude;
+			}
+			else {
+				
+				for (int i=0; i < _ParentCount; ) {
+					
+					pFreq = _ParentArray[i++]; 
+					pAmpl = _ParentArray[i++]; 
+					
+					//final += pAmpl * sin(_Frequency * pFreq * x);
+					modifiedPos.y += sin(data.vertex.x * _Frequency * pFreq) * pAmpl;
+					posPlusTangent.y += sin(posPlusTangent.x * _Frequency * pFreq) * pAmpl;
+					posPlusBitangent.y += sin(posPlusBitangent.x * _Frequency * pFreq) * pAmpl;
+				}
+				//final *= _Amplitude;
+				modifiedPos.y *= _Amplitude;
+				posPlusTangent.y *= _Amplitude;
+				posPlusBitangent.y *= _Amplitude;
+				
+			}
+
 
 			float3 modifiedTangent = posPlusTangent - modifiedPos;
 			float3 modifiedBitangent = posPlusBitangent - modifiedPos;
@@ -65,6 +94,9 @@
 			float3 modifiedNormal = cross(modifiedTangent, modifiedBitangent);
 			data.normal = normalize(modifiedNormal);
 			data.vertex = modifiedPos;
+
+	
+
 		}
 
 		//the surface shader function which sets parameters the lighting function then uses
