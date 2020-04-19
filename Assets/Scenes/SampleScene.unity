@@ -141,6 +141,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   freq: 0
   ampl: 0
+  maxParents: 100
+  mat: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +334,6 @@ MonoBehaviour:
   wavePrefab: {fileID: -4178516698389466069, guid: c508291dc645043c4b0ff152a187a4bb,
     type: 3}
   waveShader: {fileID: 4800000, guid: dd1bc80052c4545b5993ffe6675e6836, type: 3}
-  sineScript: {fileID: 0}
 --- !u!1001 &1659192926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -399,6 +400,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: waveLine (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: c508291dc645043c4b0ff152a187a4bb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1408749268252021088, guid: c508291dc645043c4b0ff152a187a4bb,
         type: 3}
@@ -473,6 +479,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: waveLine
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: c508291dc645043c4b0ff152a187a4bb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1408749268252021088, guid: c508291dc645043c4b0ff152a187a4bb,
         type: 3}
