@@ -17,8 +17,7 @@ public class SineController : MonoBehaviour
     private string parentString = "_ParentArray";
     private int parentCount = 0;
     
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         parentWaves = new float[maxParents * 2];
         mat = this.GetComponent<MeshRenderer>().material; 
@@ -63,20 +62,26 @@ public class SineController : MonoBehaviour
 
     //Returns true if this is a base wave (Has not had its own freq/ampl changed, and can have other waves added to it)
     public bool isBaseWave() {
-        return freq == 1f && ampl == 1f;
+         
+        if (parentCount > 0) {
+            return freq == 1f && ampl == 1f;
+        }
+        return true; 
     }
     
     //Add a parent wave to this one
     public void addCollidedParent(float pFreq, float pAmpl) {
-        
+        print("adding parent");
         if (isBaseWave() && parentCount < 2*maxParents) {
-             
+            
             parentWaves[parentCount++] = pFreq;
             parentWaves[parentCount++] = pAmpl;
             
             //Update shader
+            
             mat.SetFloatArray(parentString, parentWaves);
             mat.SetFloat("_ParentCount", parentCount);
+            print("updated shader");
         }
         
     }

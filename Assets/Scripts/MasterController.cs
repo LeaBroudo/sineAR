@@ -33,9 +33,14 @@ public class MasterController : MonoBehaviour
         
         //Add controller script
         SineController sineScript = newWave.AddComponent<SineController>();
-        sineScript.mat = newWave.GetComponent<MeshRenderer>().material;
+        
+        /* For testing
         sineScript.changeFrequency(0.5f);
         sineScript.changeAmplitude(-0.5f);
+
+        sineScript.addCollidedParent(2f, 2f);
+        sineScript.addCollidedParent(.2f, .3f);
+        */
 
         //TODO: Make sound
 
