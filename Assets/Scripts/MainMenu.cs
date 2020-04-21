@@ -5,15 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void Play()
-    {
-        SceneManager.LoadScene("SampleScene");
-    }
+    public void Play(){ SceneManager.LoadScene("SampleScene"); }
+ 
+    public void Learn(){ SceneManager.LoadScene("LearnMenu"); }
 
-    public void Learn()
-    {
-        SceneManager.LoadScene("Learn");
-    }
+    public void LearnAboutWaves(){ SceneManager.LoadScene("Learn2D"); }
+
+    public void LearnAR(){ SceneManager.LoadScene("LearnAR"); }
+
+    public void Home() { SceneManager.LoadScene("MainMenu"); }
+
+    public void BackToLearnMenu() { SceneManager.LoadScene("LearnMenu"); }
 
     public void EndGame()
     {
