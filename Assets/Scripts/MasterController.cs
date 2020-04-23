@@ -34,13 +34,16 @@ public class MasterController : MonoBehaviour
         //Add controller script
         SineController sineScript = newWave.AddComponent<SineController>();
         
-        /* For testing
-        sineScript.changeFrequency(0.5f);
-        sineScript.changeAmplitude(-0.5f);
+        ///*// For testing
+        //sineScript.changeFrequency(0.5f);
+        //sineScript.changeAmplitude(-0.5f);
 
-        sineScript.addCollidedParent(2f, 2f);
-        sineScript.addCollidedParent(.2f, .3f);
-        */
+        sineScript.addCollidedParent(1f, 1f);
+        sineScript.addCollidedParent(2f, 1f);
+        sineScript.addCollidedParent(3f, 1f);
+        sineScript.addCollidedParent(4f, 1f);
+        sineScript.addCollidedParent(5f, 1f);
+        //*/
 
         //TODO: Make sound
 

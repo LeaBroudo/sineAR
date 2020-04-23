@@ -8,9 +8,13 @@ public class SineController : MonoBehaviour
     //Derived Wave form: ampl * ((pAmpl1 * sin(freq * pFreq1*x)) + (pAmpl2 * sin(freq * pFreq2*x)) + ...)
     //  pAmpl1, pFreq1, etc. are from each of the wave's parents
     
-    public float freq = 1f; //frequency
-    public float ampl = 1f; //amplitude
+    public float meshFreq = 1f; //frequency
+    public float meshAmpl = 1f; //amplitude
     public int maxParents = 100;
+
+    //TODO: GET meshFreq/ampl -> actual freq ampl 
+    //110 - 3520 freq
+    //.1 gain
     
     public Material mat; 
     private float[] parentWaves; //The frequency & wavelength of all waves this wave is made of: [pFreq1, pAmpl1, pFreq2, pAmpl2,...]
@@ -35,36 +39,36 @@ public class SineController : MonoBehaviour
 
     public float getWavelength() {
         float sonicSpeed = 343; //In m/s
-        return sonicSpeed/freq;
+        return sonicSpeed/meshFreq;
     }
 
     public float getFrequency() {
-        return freq;
+        return meshFreq;
     }
 
     public float getPeriod() {
-        return 1.0f/freq;
+        return 1.0f/meshFreq;
     }
 
     public float getAmpitude() {
-        return ampl;
+        return meshAmpl;
     }
 
     public void changeFrequency(float d) {
-        freq += d;
-        mat.SetFloat("_Frequency", freq);
+        meshFreq += d;
+        mat.SetFloat("_Frequency", meshFreq);
     } 
 
     public void changeAmplitude(float d) {
-        ampl += d;
-        mat.SetFloat("_Amplitude", ampl);
+        meshAmpl += d;
+        mat.SetFloat("_Amplitude", meshAmpl);
     } 
 
     //Returns true if this is a base wave (Has not had its own freq/ampl changed, and can have other waves added to it)
     public bool isBaseWave() {
          
         if (parentCount > 0) {
-            return freq == 1f && ampl == 1f;
+            return meshFreq == 1f && meshAmpl == 1f;
         }
         return true; 
     }
@@ -98,9 +102,9 @@ public class SineController : MonoBehaviour
             pFreq = parentWaves[i++]; 
             pAmpl = parentWaves[i++]; 
             
-            final += pAmpl * Mathf.Sin(freq * pFreq * x);
+            final += pAmpl * Mathf.Sin(meshFreq * pFreq * x);
         }
-        final *= ampl;
+        final *= meshAmpl;
 
         return final;
 

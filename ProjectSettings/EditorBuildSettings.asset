@@ -5,19 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: 69b3ba9d0e805524caf1ada8669ce151
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/3DManipulation.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Learn2D.unity
     guid: c814e2187cb5c4d4d94bba2ab9fe25b8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LearnAR.unity
     guid: c600d0030d4aa4c43a96fccdaf610ed5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LearnMenu.unity
     guid: 80f0b28d31a24f0419c1abffd8a4b02f
   m_configObjects: {}
