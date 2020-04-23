@@ -12,6 +12,7 @@ public class MasterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        wavePrefab.SetActive(false);
         allWaves = new List<GameObject>();
         createNewWave();
     }
@@ -25,16 +26,22 @@ public class MasterController : MonoBehaviour
     public void createNewWave() {
         
         //Instantiate prefab
-        Vector3 spawnPos = this.transform.position + new Vector3(0,0,0.5f);
+        Vector3 spawnPos = this.transform.position + new Vector3(-10f,0,20f);
         GameObject newWave = Instantiate(wavePrefab, spawnPos, Quaternion.identity);
+        allWaves.Add(newWave);
+        newWave.name = "waveHandle_" + allWaves.Count;
+
+        //Get controller script
+        SineController sineScript = newWave.GetComponent<SineController>();
 
         //Add material and Shader 
-        newWave.GetComponent<MeshRenderer>().material = new Material(waveShader);
+        sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
+        sineScript.setMaterial();
+
+        //Set Object active
+        newWave.SetActive(true);
         
-        //Add controller script
-        SineController sineScript = newWave.AddComponent<SineController>();
-        
-        ///*// For testing
+         /* For testing
         //sineScript.changeFrequency(0.5f);
         //sineScript.changeAmplitude(-0.5f);
 
@@ -43,12 +50,11 @@ public class MasterController : MonoBehaviour
         sineScript.addCollidedParent(3f, 1f);
         sineScript.addCollidedParent(4f, 1f);
         sineScript.addCollidedParent(5f, 1f);
-        //*/
+         */
 
         //TODO: Make sound
 
-        //Add wave to list
-        allWaves.Add(newWave);
+
 
 
     }

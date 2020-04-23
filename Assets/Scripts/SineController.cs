@@ -8,27 +8,29 @@ public class SineController : MonoBehaviour
     //Derived Wave form: ampl * ((pAmpl1 * sin(freq * pFreq1*x)) + (pAmpl2 * sin(freq * pFreq2*x)) + ...)
     //  pAmpl1, pFreq1, etc. are from each of the wave's parents
     
+    public GameObject pivot; 
+    public GameObject mesh; 
+    public GameObject freqHandle; 
+    public GameObject amplHandle; 
+    
     public float meshFreq = 1f; //frequency
     public float meshAmpl = 1f; //amplitude
     public int maxParents = 100;
-
-    //TODO: GET meshFreq/ampl -> actual freq ampl 
-    //110 - 3520 freq
-    //.1 gain
     
     public Material mat; 
     private float[] parentWaves; //The frequency & wavelength of all waves this wave is made of: [pFreq1, pAmpl1, pFreq2, pAmpl2,...]
     private string parentString = "_ParentArray";
     private int parentCount = 0;
-    
-    void Awake()
-    {
-        parentWaves = new float[maxParents * 2];
-        mat = this.GetComponent<MeshRenderer>().material; 
-        print("Material: "+mat.name);
 
-        mat.SetFloatArray(parentString, parentWaves);
-        mat.SetFloat("_ParentCount", parentCount);
+    private float freqConversion; 
+    private float amplConversion; 
+    
+    void Start()
+    {
+        //110 - 3520 freq
+        //.1 gain (using .5 as max volume for now)
+        freqConversion = 3520f / 5f; 
+        amplConversion = 0.5f / 1.5f;
     }
 
     // Update is called once per frame
@@ -37,21 +39,33 @@ public class SineController : MonoBehaviour
         
     }
 
+    public void setMaterial() {
+        mat = mesh.GetComponent<MeshRenderer>().material; 
+        print("Material: "+mat.name);
+
+        parentWaves = new float[maxParents * 2];
+        mat.SetFloat("_ParentCount", parentCount);
+        mat.SetFloatArray(parentString, parentWaves);
+    }
+
     public float getWavelength() {
         float sonicSpeed = 343; //In m/s
-        return sonicSpeed/meshFreq;
+        return sonicSpeed/getFrequency();
     }
 
+    //Returns Audio Frequency
     public float getFrequency() {
-        return meshFreq;
+        return meshFreq * freqConversion;
     }
 
+    //Returns Audio Period
     public float getPeriod() {
-        return 1.0f/meshFreq;
+        return 1.0f/getFrequency();
     }
 
+    //Returns Audio Amplitude
     public float getAmpitude() {
-        return meshAmpl;
+        return meshAmpl * amplConversion;
     }
 
     public void changeFrequency(float d) {
@@ -82,7 +96,6 @@ public class SineController : MonoBehaviour
             parentWaves[parentCount++] = pAmpl;
             
             //Update shader
-            
             mat.SetFloatArray(parentString, parentWaves);
             mat.SetFloat("_ParentCount", parentCount);
             print("updated shader");
