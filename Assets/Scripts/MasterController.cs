@@ -8,6 +8,10 @@ public class MasterController : MonoBehaviour
     public Shader waveShader;
     
     private List<GameObject> allWaves; 
+
+    private Transform obj = null;
+    private Vector3 offSet;
+    private float dist; 
     
     // Start is called before the first frame update
     void Start()
@@ -20,7 +24,38 @@ public class MasterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //GET MOUSE INPUT TO MOVE HANDLES AROUND
+        Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);     // Gets the mouse position in the form of a ray.
+  
+        if (Input.GetButtonDown("Fire1") && !obj) {     // If we click the mouse...
         
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit)) {
+
+                obj = hit.transform;     
+                offSet = obj.position-hit.point;       
+                dist = (ray.origin - hit.point).magnitude;  
+
+            }
+        }
+    
+        else if (Input.GetButtonUp("Fire1")) {
+            obj = null;      // Let go of the object.
+
+        }
+        
+        //Drag selected object
+        if (obj) {
+            
+            Vector3 pos = ray.GetPoint(dist) + offSet;    
+            
+            if (obj.name == "amplitudeHandle") {
+                obj.GetComponent<AmplitudeController>().SetPosition(pos);
+            }
+            else if (obj.name == "frequencyHandle") {
+                obj.GetComponent<FrequencyController>().SetPosition(pos);
+            }
+        }
     }
 
     public void createNewWave() {

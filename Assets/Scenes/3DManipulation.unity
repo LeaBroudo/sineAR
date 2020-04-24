@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 159475259}
   - component: {fileID: 159475262}
   m_Layer: 0
-  m_Name: 'frequencyHandle '
+  m_Name: frequencyHandle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -228,7 +228,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 159475257}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.914435, y: 0, z: 0}
+  m_LocalPosition: {x: 10.96, y: 0, z: 0}
   m_LocalScale: {x: 0.29757577, y: 0.89198697, z: 0.44599348}
   m_Children: []
   m_Father: {fileID: 1011520737}
@@ -307,6 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7696a169344114be79f6c8367947bbe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waveHandle: {fileID: 1011520733}
 --- !u!1 &247555665
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,7 +336,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 247555665}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 5.0067234, y: 1.3067609, z: 0}
+  m_LocalPosition: {x: 5.0067234, y: 1.61, z: 0}
   m_LocalScale: {x: 0.29757583, y: 2.0822546, z: 0.44599348}
   m_Children: []
   m_Father: {fileID: 1011520737}
@@ -414,6 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a25f225dcf3a40ab990138146dc3ef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waveHandle: {fileID: 1011520733}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
