@@ -3,11 +3,11 @@
     //https://github.com/ronja-tutorials/ShaderTutorials/blob/master/Assets/015_VertexManipulation/vertexmanipulation.shader
 	//show values to edit in inspector
 	Properties {
-		_Color ("Tint", Color) = (0, 0, 0, 1)
+		_Color ("Tint", Color) = (1, 1, 1, 1)
 		_MainTex ("Texture", 2D) = "white" {}
-		_Smoothness ("Smoothness", Range(0, 1)) = 0
-		_Metallic ("Metalness", Range(0, 1)) = 0
-		[HDR] _Emission ("Emission", color) = (0,0,0)
+		//_Smoothness ("Smoothness", Range(0, 1)) = 0
+		//_Metallic ("Metalness", Range(0, 1)) = 0
+		//[HDR] _Emission ("Emission", color) = (0,0,0)
 
 		_Amplitude ("Amplitude", Range(0, 1.5)) = 1
 		_Frequency ("Frequency", Range(0, 5)) = 1
@@ -98,7 +98,7 @@
 	
 
 		}
-
+		
 		//the surface shader function which sets parameters the lighting function then uses
 		void surf (Input i, inout SurfaceOutputStandard o) {
 			//sample and tint albedo texture
@@ -106,10 +106,11 @@
 			col *= _Color;
 			o.Albedo = col.rgb;
 			//just apply the values for metalness, smoothness and emission
-			o.Metallic = _Metallic;
-			o.Smoothness = _Smoothness;
-			o.Emission = _Emission;
+			//o.Metallic = _Metallic;
+			//o.Smoothness = _Smoothness;
+			//o.Emission = _Emission;
 		}
+		
 		ENDCG
 	}
 	FallBack "Standard"
