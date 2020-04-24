@@ -9,8 +9,8 @@ public class AmplitudeController : MonoBehaviour
     private SineController sineScript;
     private float lastY; 
 
-    private float maxAmpl = 6f;
-    private float minAmpl = 1.15f;
+    private float maxAmpl = 3.66f;
+    private float minAmpl = 1.16f;
     
     // Start is called before the first frame update
     void Start()
@@ -38,6 +38,8 @@ public class AmplitudeController : MonoBehaviour
         this.transform.localPosition = new Vector3(x, localPos.y, z);
         sineScript.changeAmplitude(2f*(localPos.y-lastY));
         lastY = localPos.y; 
+
+        print("Audio ampl: "+sineScript.getAmplitude());
     }
     
 }

@@ -9,8 +9,8 @@ public class FrequencyController : MonoBehaviour
     private SineController sineScript;
     private float lastX;
 
-    private float maxFreq = 11.45f;
-    private float minFreq = 9.60f;
+    private float maxFreq = 12.24f;
+    private float minFreq = 9.75f;
     
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,7 @@ public class FrequencyController : MonoBehaviour
         Vector3 localPos = waveHandle.transform.InverseTransformPoint(pos); 
         
         if (localPos.x < minFreq || localPos.x > maxFreq) return; 
-        print("local: "+localPos);
+        //print("local: "+localPos);
 
         float y = this.transform.localPosition.y; 
         float z = this.transform.localPosition.z; 
@@ -38,5 +38,7 @@ public class FrequencyController : MonoBehaviour
         this.transform.localPosition = new Vector3(localPos.x, y, z);
         sineScript.changeFrequency(2f*(lastX-localPos.x));
         lastX = localPos.x; 
+
+        print("Audio freq: "+sineScript.getFrequency());
     }
 }

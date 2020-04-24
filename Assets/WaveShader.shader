@@ -9,7 +9,7 @@
 		//_Metallic ("Metalness", Range(0, 1)) = 0
 		//[HDR] _Emission ("Emission", color) = (0,0,0)
 
-		_Amplitude ("Amplitude", Range(0, 1.5)) = 1
+		_Amplitude ("Amplitude", Range(0, 5)) = 1
 		_Frequency ("Frequency", Range(0, 5)) = 1
 		_AnimationSpeed ("Animation Speed", Range(0,5)) = 1
 	}

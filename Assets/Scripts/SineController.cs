@@ -30,7 +30,7 @@ public class SineController : MonoBehaviour
         //110 - 3520 freq
         //.1 gain (using .5 as max volume for now)
         freqConversion = 3520f / 5f; 
-        amplConversion = 0.5f / 1.5f;
+        amplConversion = 0.5f / 5f;
     }
 
     // Update is called once per frame
@@ -64,7 +64,7 @@ public class SineController : MonoBehaviour
     }
 
     //Returns Audio Amplitude
-    public float getAmpitude() {
+    public float getAmplitude() {
         return meshAmpl * amplConversion;
     }
 
