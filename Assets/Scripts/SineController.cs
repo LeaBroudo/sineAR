@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SineController : MonoBehaviour
 {
@@ -18,11 +19,15 @@ public class SineController : MonoBehaviour
     public int maxParents = 100;
 
     public bool editingPos = false; 
+
+    public Material baseMat; 
+    public Material nonBaseMat; 
+    private bool isBaseColor = true; 
     
-    public Material mat; 
+    private Material mat; 
     private float[] parentWaves; //The frequency & wavelength of all waves this wave is made of: [pFreq1, pAmpl1, pFreq2, pAmpl2,...]
     private string parentString = "_ParentArray";
-    private int parentCount = 0;
+    public int parentCount = 0;
 
     private float freqConversion; 
     private float amplConversion; 
@@ -72,11 +77,13 @@ public class SineController : MonoBehaviour
     public void changeFrequency(float d) {
         meshFreq += d;
         mat.SetFloat("_Frequency", meshFreq);
+        checkColor();
     } 
 
     public void changeAmplitude(float d) {
         meshAmpl += d;
         mat.SetFloat("_Amplitude", meshAmpl);
+        checkColor();
     } 
 
     //Returns true if this is a base wave (Has not had its own freq/ampl changed, and can have other waves added to it)
@@ -86,6 +93,19 @@ public class SineController : MonoBehaviour
             return meshFreq == 1f && meshAmpl == 1f;
         }
         return true; 
+    }
+
+    public void checkColor() {
+
+        if (isBaseColor && !isBaseWave()) {
+            this.GetComponent<MeshRenderer>().material = nonBaseMat;
+            isBaseColor = false; 
+        }
+        else if (!isBaseColor && isBaseWave()) {
+            this.GetComponent<MeshRenderer>().material = baseMat;
+            isBaseColor = true; 
+        }
+
     }
     
     //Add a parent wave to this one
@@ -103,34 +123,66 @@ public class SineController : MonoBehaviour
         
     }
 
+    public float[] getFandA() {
+        float[] fa = {meshFreq, meshAmpl}; 
+        return fa;
+    }
+
     public float[] getCollidedParents() {
         return parentWaves;
     }
 
-    private void OnTriggerStay(Collider other) {
+    private void OnTriggerEnter(Collider other) {
         //print(this.name+" collided: "+other.name);
         
         //If currently editing position, do nothing
-        if (!editingPos && other.name == "pivot") {
+        //if (!editingPos && other.name == "pivot") {
+        if (other.name == "pivot") {
             GameObject otherWave = other.gameObject.transform.parent.gameObject; 
             SineController otherScript = otherWave.GetComponent<SineController>();
 
             //Only combine if both are basewaves and other wave not editing position
-            if (!otherScript.editingPos && isBaseWave() && otherScript.isBaseWave()) {
+            //if (!otherScript.editingPos && isBaseWave() && otherScript.isBaseWave()) {
+            if (isBaseWave() && otherScript.isBaseWave()) {
 
-                //Add other waves parents to this one; 
-                float pFreq, pAmpl; 
+                //Move own freq and amplitude to parent's array
+                if (parentCount == 0) {
+                    addCollidedParent(meshFreq, meshAmpl); 
+                    meshFreq = 1f;
+                    meshAmpl = 1f;
+                }
+
                 float[] otherParents = otherScript.getCollidedParents();
-                for (int i=0; i < otherParents.GetLength(0);) {
-                    pFreq = otherParents[i++];
-                    pAmpl = otherParents[i++];
-                    addCollidedParent(pFreq, pAmpl);
+                //Add other wave's freq and ampl to this one's parents
+                if (otherScript.parentCount == 0) {
+                    addCollidedParent(otherScript.meshFreq, otherScript.meshAmpl); 
+                }
+                //Add other wave's parents to this one
+                else {
+                    float pFreq, pAmpl; 
+                    for (int i=0; i < otherScript.parentCount;) {
+                        pFreq = otherParents[i++];
+                        pAmpl = otherParents[i++];
+                        addCollidedParent(pFreq, pAmpl);
+                    }
                 }
 
                 //Destroy the other wave
                 string name = otherWave.name; 
                 Destroy(otherWave);
                 print("deleted: "+ name);
+
+                //Reset handle positions
+                freqHandle.GetComponent<FrequencyController>().ResetPosition();
+                amplHandle.GetComponent<AmplitudeController>().ResetPosition();
+
+                /* 
+                for (int i=0; i < parentCount;) {
+
+                    print("pf: "+parentWaves[i++]+" pa: " +parentWaves[i++]);
+                }
+                print("f: "+meshFreq+" a: "+meshAmpl);
+                */
             }
         }
     }

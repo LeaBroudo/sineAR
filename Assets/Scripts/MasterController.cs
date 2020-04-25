@@ -92,7 +92,7 @@ public class MasterController : MonoBehaviour
         //Set Object active
         newWave.SetActive(true);
         
-        // /* For testing
+         /* For testing
         //sineScript.changeFrequency(0.5f);
         //sineScript.changeAmplitude(-0.5f);
 
@@ -101,7 +101,7 @@ public class MasterController : MonoBehaviour
         sineScript.addCollidedParent(3f, 1f);
         sineScript.addCollidedParent(4f, 1f);
         sineScript.addCollidedParent(5f, 1f);
-        // */
+         */
 
         //TODO: Make sound
 

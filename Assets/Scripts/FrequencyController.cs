@@ -11,12 +11,15 @@ public class FrequencyController : MonoBehaviour
 
     private float maxFreq = 12.24f;
     private float minFreq = 9.75f;
+    private Vector3 origin; 
     
     // Start is called before the first frame update
     void Start()
     {
         sineScript = waveHandle.GetComponent<SineController>();
         lastX = this.transform.localPosition.x; 
+
+        origin = this.transform.localPosition;
     }
 
     // Update is called once per frame
@@ -41,4 +44,10 @@ public class FrequencyController : MonoBehaviour
 
         //print("Audio freq: "+sineScript.getFrequency());
     }
+
+    public void ResetPosition() {
+        this.transform.localPosition = origin; 
+        lastX = origin.x;
+    }
+
 }

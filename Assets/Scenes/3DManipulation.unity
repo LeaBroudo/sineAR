@@ -722,7 +722,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ac4ce29de829743cf9439ae55790dedb, type: 2}
+  - {fileID: 2100000, guid: 15442a4c8ff4f4effb647d0705dccc4d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -788,7 +788,8 @@ MonoBehaviour:
   meshAmpl: 1
   maxParents: 100
   editingPos: 0
-  mat: {fileID: 0}
+  baseMat: {fileID: 2100000, guid: 15442a4c8ff4f4effb647d0705dccc4d, type: 2}
+  nonBaseMat: {fileID: 2100000, guid: ac4ce29de829743cf9439ae55790dedb, type: 2}
 --- !u!1 &1314542351
 GameObject:
   m_ObjectHideFlags: 0
