@@ -39,7 +39,7 @@ public class AmplitudeController : MonoBehaviour
         sineScript.changeAmplitude(2f*(localPos.y-lastY));
         lastY = localPos.y; 
 
-        print("Audio ampl: "+sineScript.getAmplitude());
+        //print("Audio ampl: "+sineScript.getAmplitude());
     }
     
 }

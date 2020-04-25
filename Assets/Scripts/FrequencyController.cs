@@ -39,6 +39,6 @@ public class FrequencyController : MonoBehaviour
         sineScript.changeFrequency(2f*(lastX-localPos.x));
         lastX = localPos.x; 
 
-        print("Audio freq: "+sineScript.getFrequency());
+        //print("Audio freq: "+sineScript.getFrequency());
     }
 }

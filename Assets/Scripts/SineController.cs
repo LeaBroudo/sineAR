@@ -16,6 +16,8 @@ public class SineController : MonoBehaviour
     public float meshFreq = 1f; //frequency
     public float meshAmpl = 1f; //amplitude
     public int maxParents = 100;
+
+    public bool editingPos = false; 
     
     public Material mat; 
     private float[] parentWaves; //The frequency & wavelength of all waves this wave is made of: [pFreq1, pAmpl1, pFreq2, pAmpl2,...]
@@ -36,12 +38,11 @@ public class SineController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public void setMaterial() {
         mat = mesh.GetComponent<MeshRenderer>().material; 
-        print("Material: "+mat.name);
+        mat.color = Color.black;
 
         parentWaves = new float[maxParents * 2];
         mat.SetFloat("_ParentCount", parentCount);
@@ -89,7 +90,7 @@ public class SineController : MonoBehaviour
     
     //Add a parent wave to this one
     public void addCollidedParent(float pFreq, float pAmpl) {
-        print("adding parent");
+        //print("adding parent");
         if (isBaseWave() && parentCount < 2*maxParents) {
             
             parentWaves[parentCount++] = pFreq;
@@ -98,11 +99,47 @@ public class SineController : MonoBehaviour
             //Update shader
             mat.SetFloatArray(parentString, parentWaves);
             mat.SetFloat("_ParentCount", parentCount);
-            print("updated shader");
         }
         
     }
 
+    public float[] getCollidedParents() {
+        return parentWaves;
+    }
+
+    private void OnTriggerStay(Collider other) {
+        //print(this.name+" collided: "+other.name);
+        
+        //If currently editing position, do nothing
+        if (!editingPos && other.name == "pivot") {
+            GameObject otherWave = other.gameObject.transform.parent.gameObject; 
+            SineController otherScript = otherWave.GetComponent<SineController>();
+
+            //Only combine if both are basewaves and other wave not editing position
+            if (!otherScript.editingPos && isBaseWave() && otherScript.isBaseWave()) {
+
+                //Add other waves parents to this one; 
+                float pFreq, pAmpl; 
+                float[] otherParents = otherScript.getCollidedParents();
+                for (int i=0; i < otherParents.GetLength(0);) {
+                    pFreq = otherParents[i++];
+                    pAmpl = otherParents[i++];
+                    addCollidedParent(pFreq, pAmpl);
+                }
+
+                //Destroy the other wave
+                string name = otherWave.name; 
+                Destroy(otherWave);
+                print("deleted: "+ name);
+            }
+        }
+    }
+
+    public void SetPosition(Vector3 pos) {
+        this.transform.position = pos; 
+    }
+
+    /* 
     public float computeWaveAtPoint(float x) {
 
         //return: ampl * ((pAmpl1 * sin(freq * pFreq1*x)) + (pAmpl2 * sin(freq * pFreq2*x)) + ...)
@@ -122,4 +159,5 @@ public class SineController : MonoBehaviour
         return final;
 
     }
+    */
 }

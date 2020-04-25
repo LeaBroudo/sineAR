@@ -18,12 +18,17 @@ public class MasterController : MonoBehaviour
     {
         wavePrefab.SetActive(false);
         allWaves = new List<GameObject>();
-        createNewWave();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+        if (Input.GetKeyUp("w")) {
+            createNewWave();
+        }
+        
         //GET MOUSE INPUT TO MOVE HANDLES AROUND
         Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);     // Gets the mouse position in the form of a ray.
   
@@ -35,13 +40,21 @@ public class MasterController : MonoBehaviour
                 obj = hit.transform;     
                 offSet = obj.position-hit.point;       
                 dist = (ray.origin - hit.point).magnitude;  
+                
+                if (obj.name.Split('_')[0] == "waveHandle") {
+                    obj.GetComponent<SineController>().editingPos = true; 
+                }
 
             }
         }
     
         else if (Input.GetButtonUp("Fire1")) {
+            
+            if (obj != null && obj.name.Split('_')[0] == "waveHandle") {
+                obj.GetComponent<SineController>().editingPos = false; 
+            }
+            
             obj = null;      // Let go of the object.
-
         }
         
         //Drag selected object
@@ -54,6 +67,9 @@ public class MasterController : MonoBehaviour
             }
             else if (obj.name == "frequencyHandle") {
                 obj.GetComponent<FrequencyController>().SetPosition(pos);
+            }
+            else if (obj.name.Split('_')[0] == "waveHandle") {
+                obj.GetComponent<SineController>().SetPosition(pos);
             }
         }
     }
@@ -76,7 +92,7 @@ public class MasterController : MonoBehaviour
         //Set Object active
         newWave.SetActive(true);
         
-         /* For testing
+        // /* For testing
         //sineScript.changeFrequency(0.5f);
         //sineScript.changeAmplitude(-0.5f);
 
@@ -85,7 +101,7 @@ public class MasterController : MonoBehaviour
         sineScript.addCollidedParent(3f, 1f);
         sineScript.addCollidedParent(4f, 1f);
         sineScript.addCollidedParent(5f, 1f);
-         */
+        // */
 
         //TODO: Make sound
 
