@@ -79,6 +79,7 @@ public class Controller2D : MonoBehaviour
             }
         }
     }
+
     public void createNewWave()
     {
 
@@ -98,6 +99,7 @@ public class Controller2D : MonoBehaviour
         //Set Object active
         newWave.SetActive(true);
     }
+
     public void SelectTab(Button button)
     {
         Button prevSelected = GameObject.FindWithTag("selected").GetComponent<Button>(); ;
