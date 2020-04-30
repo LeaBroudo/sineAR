@@ -28,35 +28,40 @@ public class MasterController : MonoBehaviour
         if (Input.GetKeyUp("w")) {
             createNewWave();
         }
-        
+
         //GET MOUSE INPUT TO MOVE HANDLES AROUND
         Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);     // Gets the mouse position in the form of a ray.
-  
-        if (Input.GetButtonDown("Fire1") && !obj) {     // If we click the mouse...
-        
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit)) {
 
-                obj = hit.transform;     
-                offSet = obj.position-hit.point;       
-                dist = (ray.origin - hit.point).magnitude;  
-                
-                if (obj.name.Split('_')[0] == "waveHandle") {
-                    obj.GetComponent<SineController>().editingPos = true; 
+        if (Input.GetButtonDown("Fire1") && !obj)
+        {     // If we click the mouse...
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+
+                obj = hit.transform;
+                offSet = obj.position - hit.point;
+                dist = (ray.origin - hit.point).magnitude;
+
+                if (obj.name.Split('_')[0] == "waveHandle")
+                {
+                    obj.GetComponent<SineController>().editingPos = true;
                 }
 
             }
         }
-    
-        else if (Input.GetButtonUp("Fire1")) {
-            
-            if (obj != null && obj.name.Split('_')[0] == "waveHandle") {
-                obj.GetComponent<SineController>().editingPos = false; 
+
+        else if (Input.GetButtonUp("Fire1"))
+        {
+
+            if (obj != null && obj.name.Split('_')[0] == "waveHandle")
+            {
+                obj.GetComponent<SineController>().editingPos = false;
             }
-            
+
             obj = null;      // Let go of the object.
         }
-        
+
         //Drag selected object
         if (obj) {
             
