@@ -49,11 +49,11 @@ public class AudioController : MonoBehaviour
 	void OnAudioFilterRead(float[] data, int channels)
 	{
 		if (enabled){
-			if (parentCount == 0) {
+			// if (parentCount == 0) {
 				frequency = sineScript.getFrequency() / 1.75f;
 				gain = sineScript.getAmplitude() / 2.5f ;
-			} 
-			else {
+			// } 
+			// else {
 			// 	float childFreqs = 0;
 			// 	for (int wCount=0; wCount < parentCount/2; wCount++) {
 			// 		childFreqs += (parentWaves[])
