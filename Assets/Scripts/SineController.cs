@@ -29,8 +29,8 @@ public class SineController : MonoBehaviour
     private string parentString = "_ParentArray";
     public int parentCount = 0;
 
-    private float freqConversion; 
-    private float amplConversion; 
+    public float freqConversion; 
+    public float amplConversion; 
     
     void Start()
     {
