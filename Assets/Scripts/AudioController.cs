@@ -7,68 +7,80 @@ using UnityEngine;
 public class AudioController : MonoBehaviour
 {
 
-	public float frequency = 440f;
-	private float increment;
-	private float phase;
-	private float samplingFrequency = 48000f;
-	const float pi = Mathf.PI;
-
+	public bool enabled;
+	public float frequency; /* Range ~ [110,3520] */
 	public float gain;
-	public float volume = 0.1f;
+	// public float volume = 0.1f;
+
+	private float increment; // Step along wave
+	private float phase; 
+	private float samplingFrequency = 48000f;
 
 	public float [] frequencies;
 	public int freqIdx;
 
+    private SineController sineScript;
+    private float[] parentWaves;
+    private int parentCount;
+
+    // private bool isParent;
+
 
 	void Start()
 	{
-		frequencies = new float[9];
-		frequencies[0] = 440;
-		frequencies[1] = 494;
-		frequencies[2] = 554;
-		frequencies[3] = 587;
-		frequencies[4] = 659;
-		frequencies[5] = 740;
-		frequencies[6] = 831;
-		frequencies[7] = 880;
-		frequencies[8] = 432; // added in this tone for fun cause some people think that A should actually be
-							  // tuned to 432 instead of 440
+		sineScript = this.GetComponent<SineController>();
+		parentCount = sineScript.parentCount;
+		frequency = 440;
+		gain = 0.1f;
+		// isParent = false;
+		setEnabled(true);
 	}
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			gain = volume;
-			frequency = frequencies[freqIdx];
-			freqIdx += 1;
-			freqIdx = freqIdx % frequencies.Length;
+		parentCount = sineScript.parentCount;
+		if (parentCount > 0) { // conditional for parent --> update parentWaves just once and then w msg
+			parentWaves = sineScript.getCollidedParents();
 		}
+		print(frequency);
+	}
 
-		if (Input.GetKeyUp(KeyCode.Space))
-		{
-			gain = 0f;
+    // Play all active parentWaves audio frequencies
+	void OnAudioFilterRead(float[] data, int channels)
+	{
+		if (enabled){
+			if (parentCount == 0) {
+				frequency = sineScript.getFrequency() / 1.75f;
+				gain = sineScript.getAmplitude() / 2.5f ;
+			} 
+			else {
+			// 	float childFreqs = 0;
+			// 	for (int wCount=0; wCount < parentCount/2; wCount++) {
+			// 		childFreqs += (parentWaves[])
+			// 	gain = sineScript.getAmplitude();
+			// }
+
+			increment = frequency * 2f * Mathf.PI / samplingFrequency;
+			Debug.Log("Number of channels:" + channels + ", data.Length: " + data.Length);
+
+			for (int i = 0; i < data.Length; i += channels) {
+				phase += increment;
+				data[i] = gain * Mathf.Sin(phase);
+
+				if (channels == 2) {
+					data[i + 1] = data[i]; // mirror audio in two channel headphones for now
+				}
+
+				if (phase > 2 * Mathf.PI) {
+					phase -= 2 * Mathf.PI;
+				}
+			}
 		}
 	}
 
-	void OnAudioFilterRead(float[] data, int channels)
+
+	public void setEnabled(bool toSet=true)
 	{
-		increment = frequency * 2f * pi / samplingFrequency;
-		Debug.Log("Number of channels:" + channels + ", data.Length: " + data.Length);
-
-		for (int i = 0; i < data.Length; i += channels)
-		{
-			phase += increment;
-			data[i] = gain * Mathf.Sin(phase);
-
-			if (channels == 2)
-			{
-				data[i + 1] = data[i]; // mirror audio in two channel headphones for now
-			}
-
-			if (phase > 2 * pi) {
-				phase -= 2 * pi;
-			}
-		}
+		enabled = toSet;
 	}
 }

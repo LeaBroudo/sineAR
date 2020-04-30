@@ -24,7 +24,6 @@ public class MasterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if (Input.GetKeyUp("w")) {
             createNewWave();
         }
@@ -88,6 +87,10 @@ public class MasterController : MonoBehaviour
         //Add material and Shader 
         sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
         sineScript.setMaterial();
+
+        //Get AudioController script
+        AudioController audioScript = newWave.GetComponent<AudioController>();
+
 
         //Set Object active
         newWave.SetActive(true);
