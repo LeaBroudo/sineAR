@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Controller2D : MonoBehaviour
 {
@@ -13,6 +14,12 @@ public class Controller2D : MonoBehaviour
     private Transform obj = null;
     private Vector3 offSet;
     private float dist;
+
+    public Sprite selectedButton;
+    public Sprite otherButton;
+    public GameObject panelA;
+    public GameObject panelF;
+    public GameObject paneladd;
 
     // Start is called before the first frame update
     void Start()
@@ -72,7 +79,6 @@ public class Controller2D : MonoBehaviour
             }
         }
     }
-
     public void createNewWave()
     {
 
@@ -91,5 +97,32 @@ public class Controller2D : MonoBehaviour
 
         //Set Object active
         newWave.SetActive(true);
+    }
+    public void SelectTab(Button button)
+    {
+        Button prevSelected = GameObject.FindWithTag("selected").GetComponent<Button>(); ;
+        prevSelected.GetComponent<Image>().sprite = otherButton;
+        prevSelected.tag = "buttonTab";
+        button.GetComponent<Image>().sprite = selectedButton;
+        button.tag = "selected";
+
+        if(button.name == "Amplutude_Button")
+        {
+            panelA.SetActive(true);
+            panelF.SetActive(false);
+            paneladd.SetActive(false);
+        }
+        else if(button.name == "Frequency_Button")
+        {
+            panelF.SetActive(true);
+            panelA.SetActive(false);
+            paneladd.SetActive(false);
+        }
+        else if(button.name == "ADD_Button")
+        {
+            paneladd.SetActive(true);
+            panelA.SetActive(false);
+            panelF.SetActive(false);
+        }
     }
 }
