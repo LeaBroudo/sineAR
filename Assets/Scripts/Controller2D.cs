@@ -79,7 +79,6 @@ public class Controller2D : MonoBehaviour
             }
         }
     }
-
     public void createNewWave()
     {
 
