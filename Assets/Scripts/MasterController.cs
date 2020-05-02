@@ -27,6 +27,15 @@ public class MasterController : MonoBehaviour
         if (Input.GetKeyUp("w")) {
             createNewWave();
         }
+        else if (Input.GetKeyUp("q")) {
+            createSquareWave();
+        }
+        else if (Input.GetKeyUp("s")) {
+            createSawWave();
+        }
+        else if (Input.GetKeyUp("t")) {
+            createTriWave();
+        }
         
         //GET MOUSE INPUT TO MOVE HANDLES AROUND
         Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);     // Gets the mouse position in the form of a ray.
@@ -91,7 +100,6 @@ public class MasterController : MonoBehaviour
         //Get AudioController script
         AudioController audioScript = newWave.GetComponent<AudioController>();
 
-
         //Set Object active
         newWave.SetActive(true);
         
@@ -100,16 +108,105 @@ public class MasterController : MonoBehaviour
         //sineScript.changeAmplitude(-0.5f);
 
         sineScript.addCollidedParent(1f, 1f);
-        sineScript.addCollidedParent(2f, 1f);
-        sineScript.addCollidedParent(3f, 1f);
-        sineScript.addCollidedParent(4f, 1f);
-        sineScript.addCollidedParent(5f, 1f);
          */
 
-        //TODO: Make sound
 
+    }
 
+    public void createSquareWave() {
+        
+        //Instantiate prefab
+        Vector3 spawnPos = this.transform.position + new Vector3(-10f,0,20f);
+        GameObject newWave = Instantiate(wavePrefab, spawnPos, Quaternion.identity);
+        allWaves.Add(newWave);
+        newWave.name = "waveHandle_" + allWaves.Count;
 
+        //Get controller script
+        SineController sineScript = newWave.GetComponent<SineController>();
 
+        //Add material and Shader 
+        sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
+        sineScript.setMaterial();
+
+        //Get AudioController script
+        AudioController audioScript = newWave.GetComponent<AudioController>();
+        
+        //Add parents
+        //https://en.wikipedia.org/wiki/Square_wave
+        //Using the equation under fourier analysis
+        int noiseReduce = 20; //The greater this number, the more square the wave
+        for (int i=1; i<noiseReduce; i+=2) {            
+            sineScript.addCollidedParent(0.2f * (2*Mathf.PI * (float)i), 1f/(float)i); //the 0.2f is so the mesh looks right
+        }
+
+        //Set Object active
+        newWave.SetActive(true);
+        
+    }
+
+    public void createSawWave() {
+        
+        //Instantiate prefab
+        Vector3 spawnPos = this.transform.position + new Vector3(-10f,0,20f);
+        GameObject newWave = Instantiate(wavePrefab, spawnPos, Quaternion.identity);
+        allWaves.Add(newWave);
+        newWave.name = "waveHandle_" + allWaves.Count;
+
+        //Get controller script
+        SineController sineScript = newWave.GetComponent<SineController>();
+
+        //Add material and Shader 
+        sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
+        sineScript.setMaterial();
+
+        //Get AudioController script
+        AudioController audioScript = newWave.GetComponent<AudioController>();
+        
+        //Add parents
+        //https://en.wikipedia.org/wiki/Sawtooth_wave
+        //Using the x_sawtooth(t) equation 
+        int noiseReduce = 10; //The greater this number, the more sawtooth the wave
+        for (int i=1; i<noiseReduce; i++) {            
+            sineScript.addCollidedParent(0.3f * (2*Mathf.PI * (float)i), -1f * Mathf.Pow(-1f,i) * (1f/(float)i)); 
+            //the 0.3f is so the mesh looks right
+            //the extra -1f is to invert the entire wave
+        }
+
+        //Set Object active
+        newWave.SetActive(true);
+        
+    }
+
+    public void createTriWave() {
+        
+        //Instantiate prefab
+        Vector3 spawnPos = this.transform.position + new Vector3(-10f,0,20f);
+        GameObject newWave = Instantiate(wavePrefab, spawnPos, Quaternion.identity);
+        allWaves.Add(newWave);
+        newWave.name = "waveHandle_" + allWaves.Count;
+
+        //Get controller script
+        SineController sineScript = newWave.GetComponent<SineController>();
+
+        //Add material and Shader 
+        sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
+        sineScript.setMaterial();
+
+        //Get AudioController script
+        AudioController audioScript = newWave.GetComponent<AudioController>();
+        
+        //Add parents
+        //https://en.wikipedia.org/wiki/Triangle_wave
+        //Using first function under harmonics
+        int harmonics = 10; //The greater this number, the more triangle the wave
+        for (int i=0; i<harmonics-1; i++) {            
+            int mode = (2*i)+1;
+            sineScript.addCollidedParent(0.3f * (2*Mathf.PI * mode), Mathf.Pow(-1f,i) * Mathf.Pow(mode, -2)); 
+            //the 0.3f is so the mesh looks right
+        }
+
+        //Set Object active
+        newWave.SetActive(true);
+        
     }
 }

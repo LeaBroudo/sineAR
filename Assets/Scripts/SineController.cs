@@ -25,9 +25,10 @@ public class SineController : MonoBehaviour
     private bool isBaseColor = true; 
     
     private Material mat; 
-    private float[] parentWaves; //The frequency & wavelength of all waves this wave is made of: [pFreq1, pAmpl1, pFreq2, pAmpl2,...]
-    private string parentString = "_ParentArray";
+    public float[] parentWaves; //The frequency & wavelength of all waves this wave is made of: [pFreq1, pAmpl1, pFreq2, pAmpl2,...]
     public int parentCount = 0;
+    private string parentString = "_ParentArray";
+    
 
     private float freqConversion; 
     private float amplConversion; 
