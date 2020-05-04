@@ -29,16 +29,18 @@ public class SineController : MonoBehaviour
     public int parentCount = 0;
     private string parentString = "_ParentArray";
     
+    private ChildWIM wimScript;
+    public GameObject playerWIM;
 
     private float freqConversion; 
     private float amplConversion; 
     
-    void Start()
+    void Awake()
     {
-        //110 - 3520 freq
-        //.1 gain (using .5 as max volume for now)
+        //Conversion
         freqConversion = 3520f / 5f; 
         amplConversion = 0.5f / 5f;
+
     }
 
     // Update is called once per frame
@@ -53,6 +55,41 @@ public class SineController : MonoBehaviour
         parentWaves = new float[maxParents * 2];
         mat.SetFloat("_ParentCount", parentCount);
         mat.SetFloatArray(parentString, parentWaves);
+    }
+
+    public void setWIM() {
+        
+        //Create WIM Mesh 
+
+        //Instantiate(Object original, Transform parent);
+        GameObject meshWIM = Instantiate(this.gameObject, playerWIM.transform);
+        meshWIM.SetActive(true);
+        wimScript = meshWIM.GetComponent<ChildWIM>();
+
+        //Delete Handles
+        SineController sineScriptWIM = meshWIM.GetComponent<SineController>();
+        Destroy(sineScriptWIM.freqHandle);
+        Destroy(sineScriptWIM.amplHandle);
+        
+        //Update Scripts
+        meshWIM.GetComponent<ChildWIM>().enabled = true;
+        meshWIM.GetComponent<SineController>().enabled = false;
+        wimScript.meshParent = this.gameObject;
+        wimScript.meshWIM = meshWIM;
+        wimScript.parentScript = this.gameObject.GetComponent<SineController>();
+
+        //Set position and scale
+        meshWIM.transform.localPosition = wimScript.getParentPosFromCam() / wimScript.conversionFactor;
+        meshWIM.transform.localScale /= wimScript.conversionFactor;
+
+        //Set WIM to start
+        wimScript.fullyInstantiated = true;
+
+
+        //TODO: DELETE AUDIO CONTROLLER 
+
+
+
     }
 
     public float getWavelength() {
@@ -100,10 +137,12 @@ public class SineController : MonoBehaviour
 
         if (isBaseColor && !isBaseWave()) {
             this.GetComponent<MeshRenderer>().material = nonBaseMat;
+            wimScript.meshWIM.GetComponent<MeshRenderer>().material = nonBaseMat;
             isBaseColor = false; 
         }
         else if (!isBaseColor && isBaseWave()) {
             this.GetComponent<MeshRenderer>().material = baseMat;
+            wimScript.meshWIM.GetComponent<MeshRenderer>().material = baseMat;
             isBaseColor = true; 
         }
 
@@ -168,8 +207,9 @@ public class SineController : MonoBehaviour
                     }
                 }
 
-                //Destroy the other wave
+                //Destroy the other wave and its WIM child
                 string name = otherWave.name; 
+                Destroy(otherScript.wimScript.meshWIM);
                 Destroy(otherWave);
                 print("deleted: "+ name);
 

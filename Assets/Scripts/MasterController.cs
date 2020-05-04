@@ -92,10 +92,14 @@ public class MasterController : MonoBehaviour
 
         //Get controller script
         SineController sineScript = newWave.GetComponent<SineController>();
+        newWave.GetComponent<ChildWIM>().enabled = false; 
 
         //Add material and Shader 
         sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
         sineScript.setMaterial();
+
+        //Add WIM Child
+        sineScript.setWIM();
 
         //Get AudioController script
         AudioController audioScript = newWave.GetComponent<AudioController>();
@@ -128,6 +132,9 @@ public class MasterController : MonoBehaviour
         sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
         sineScript.setMaterial();
 
+        //Add WIM Child
+        sineScript.setWIM();
+
         //Get AudioController script
         AudioController audioScript = newWave.GetComponent<AudioController>();
         
@@ -158,6 +165,9 @@ public class MasterController : MonoBehaviour
         //Add material and Shader 
         sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
         sineScript.setMaterial();
+
+        //Add WIM Child
+        sineScript.setWIM();
 
         //Get AudioController script
         AudioController audioScript = newWave.GetComponent<AudioController>();
@@ -191,6 +201,9 @@ public class MasterController : MonoBehaviour
         //Add material and Shader 
         sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
         sineScript.setMaterial();
+
+        //Add WIM Child
+        sineScript.setWIM();
 
         //Get AudioController script
         AudioController audioScript = newWave.GetComponent<AudioController>();
