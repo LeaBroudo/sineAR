@@ -32,8 +32,8 @@ public class SineController : MonoBehaviour
     private ChildWIM wimScript;
     public GameObject playerWIM;
 
-    private float freqConversion; 
-    private float amplConversion; 
+    public float freqConversion; 
+    public float amplConversion; 
     
     void Awake()
     {
