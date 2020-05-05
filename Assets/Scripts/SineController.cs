@@ -66,10 +66,12 @@ public class SineController : MonoBehaviour
         meshWIM.SetActive(true);
         wimScript = meshWIM.GetComponent<ChildWIM>();
 
-        //Delete Handles
+        //Delete Handles and Audio 
         SineController sineScriptWIM = meshWIM.GetComponent<SineController>();
         Destroy(sineScriptWIM.freqHandle);
         Destroy(sineScriptWIM.amplHandle);
+        meshWIM.GetComponent<AudioSource>().enabled = false; 
+        meshWIM.GetComponent<AudioController>().enabled = false; 
         
         //Update Scripts
         meshWIM.GetComponent<ChildWIM>().enabled = true;
