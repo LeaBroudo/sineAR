@@ -28,6 +28,7 @@ public class MasterController : MonoBehaviour
             createNewWave();
         }
 
+<<<<<<< HEAD
         else if (Input.GetKeyUp("q")) {
             createSquareWave();
         }
@@ -38,6 +39,8 @@ public class MasterController : MonoBehaviour
             createTriWave();
         }
 
+=======
+>>>>>>> 1da33fbe095dbbe52da4cf07de04205217494201
         //GET MOUSE INPUT TO MOVE HANDLES AROUND
         Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);     // Gets the mouse position in the form of a ray.
 
