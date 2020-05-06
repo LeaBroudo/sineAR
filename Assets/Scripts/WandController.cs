@@ -52,9 +52,12 @@ public class WandController : MonoBehaviour
         string[] fullName = other.name.Split('_');
         objType = fullName[0]; 
 
-        if (objType == "waveHandle" || objType == "amplitudeHandle" || objType == "frequencyHandle") {
+        if (objType == "waveHandle" || objType == "amplitudeHandle" || objType == "frequencyHandle" || objType == "WIMwave") {
             grabbedObj = other.gameObject;
             
+            if (objType == "WIMwave") {
+                grabbedObj.GetComponent<ChildWIM>().editing = true;
+            }
             
             if (followAnim != null)
                 StopCoroutine(followAnim);
@@ -82,13 +85,7 @@ public class WandController : MonoBehaviour
             return;
         }
 
-        if (!selecting) {
-            if (followAnim != null)
-                StopCoroutine(followAnim);
-
-            print("Released: "+grabbedObj.name);
-            grabbedObj = null;
-        }
+        Release();
         
     }
 
@@ -105,7 +102,7 @@ public class WandController : MonoBehaviour
         {
             Vector3 pos = Vector3.Lerp(initPos, finalPos, 1f);
 
-            if (objType == "waveHandle"){
+            if (objType == "waveHandle" || objType == "WIMwave"){
                 grabbedObj.GetComponent<SineController>().SetPosition(pos);
             } 
             else if (objType == "amplitudeHandle") {
@@ -130,20 +127,20 @@ public class WandController : MonoBehaviour
     public void ClickSelect() {
         selecting = !selecting;
 
+        Release();
+    }
+
+    public void Release() {
+        
         if (!selecting) {
-            
-            try {
-                string go = grabbedObj.name;
-            }
-            catch{
-                //Nothing is grabbed
-                return;
-            }
-            
             if (followAnim != null)
                 StopCoroutine(followAnim);
 
-            print("Released: "+grabbedObj.name);
+            print("Released: "+grabbedObj.name + " first: "+grabbedObj.name.Split('_')[0]);
+            if (grabbedObj.name.Split('_')[0] == "WIMwave") {
+                print("hii");
+                grabbedObj.GetComponent<ChildWIM>().editing = false;
+            }
             grabbedObj = null;
         }
     }

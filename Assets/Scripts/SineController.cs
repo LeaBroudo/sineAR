@@ -90,8 +90,12 @@ public class SineController : MonoBehaviour
 
         //Set position and scale
         meshWIM.transform.localPosition = wimScript.getParentPosFromCam() / wimScript.conversionFactor;
-        meshWIM.transform.localScale /= wimScript.conversionFactor;
+        //print("Parent pos: "+wimScript.getParentPosFromCam() + " Child Pos: "+meshWIM.transform.localPosition + " lfactor: "+wimScript.conversionFactor);
+        meshWIM.transform.localScale /= wimScript.conversionFactor * 0.5f;
 
+        //Change name
+        meshWIM.name = "WIMwave_"+this.gameObject.name.Split('_')[1];
+        
         //Set WIM to start
         wimScript.fullyInstantiated = true;
 
@@ -225,13 +229,6 @@ public class SineController : MonoBehaviour
                 freqHandle.GetComponent<FrequencyController>().ResetPosition();
                 amplHandle.GetComponent<AmplitudeController>().ResetPosition();
 
-                /* 
-                for (int i=0; i < parentCount;) {
-
-                    print("pf: "+parentWaves[i++]+" pa: " +parentWaves[i++]);
-                }
-                print("f: "+meshFreq+" a: "+meshAmpl);
-                */
             }
         }
     }

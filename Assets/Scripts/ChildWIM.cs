@@ -10,17 +10,17 @@ public class ChildWIM : MonoBehaviour
     public GameObject meshParent;  
     public GameObject meshWIM;
 
-    public float conversionFactor = 20f;
+    public float conversionFactor;
 
     public SineController parentScript; 
 
-    private bool editing = false; //TRUE WHEN HANDLE COLLIDING WITH IT
+    public bool editing = false; //TRUE WHEN HANDLE COLLIDING WITH IT
     public bool fullyInstantiated = false; 
     
     // Start is called before the first frame update
     void Start()
     {
-
+        conversionFactor = 10f;
     }
 
     // Update is called once per frame
@@ -33,7 +33,7 @@ public class ChildWIM : MonoBehaviour
             
             //when this position changed, position of parent changed. 
             if (editing) {
-                meshParent.transform.position += (getMeshWIMPosFromPlayerWIM() * conversionFactor) - getParentPosFromCam();
+                meshParent.transform.localPosition += (getMeshWIMPosFromPlayerWIM() * conversionFactor) - getParentPosFromCam();
             }
             //make sure this position is same as parent
             else {
@@ -43,13 +43,13 @@ public class ChildWIM : MonoBehaviour
 
         //Check rotation difference
         if (getMeshWIMRotFromPlayerWIM() != getParentRotFromCam()) {
-            //when this position changed, position of parent changed. 
+            //when this rotation changed, position of parent changed. 
             if (editing) {
                 meshParent.transform.rotation = (getMeshWIMRotFromPlayerWIM() * Quaternion.Inverse(getParentRotFromCam())) * meshParent.transform.rotation;
             }
-            //make sure this position is same as parent
+            //make sure this rotation is same as parent
             else {
-                meshWIM.transform.rotation = getParentRotFromCam();
+                meshWIM.transform.rotation = player.transform.rotation * getParentRotFromCam();
             }
         }
         
@@ -78,35 +78,5 @@ public class ChildWIM : MonoBehaviour
         return Quaternion.Inverse(player.transform.rotation) * meshWIM.transform.rotation;
         //return player.transform.InverseTransformPoint(meshWIM.transform.position);
     }
-
-    /* 
-    public void checkMeshModifiers() {
-        
-        //Check Frequency
-        float fDiff = parentScript.meshFreq - childScript.meshFreq;
-        if (fDiff != 0f) {
-            childScript.changeFrequency(fDiff);
-        }
-
-        //Check Amplitude
-        float aDiff = parentScript.meshAmpl - childScript.meshAmpl;
-        if (aDiff != 0f) {
-            childScript.changeAmplitude(fDiff);
-        }
-
-        //Check Parentwaves
-        int childCount = childScript.parentCount; 
-        int parentCount = parentScript.parentCount; 
-        while (childCount < parentCount) {
-            
-            childScript.addCollidedParent(
-                parentScript.parentWaves[childCount++],
-                parentScript.parentWaves[childCount++]
-            );
-            
-        }
-
-    }
-    */
 
 }
