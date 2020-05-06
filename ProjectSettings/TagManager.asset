@@ -10,6 +10,7 @@ TagManager:
   - wave
   - frequencyHandle
   - amplitudeHandle
+  - newWaveButton
   layers:
   - Default
   - TransparentFX
