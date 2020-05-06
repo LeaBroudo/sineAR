@@ -98,7 +98,7 @@ public class WandController : MonoBehaviour
         float distToTarget = Vector3.Distance(initPos, finalPos);
 
         //while (distToTarget > 0.1f)
-        while (selecting)
+        while (selecting && grabbedObj)
         {
             Vector3 pos = Vector3.Lerp(initPos, finalPos, 1f);
 
@@ -132,7 +132,7 @@ public class WandController : MonoBehaviour
 
     public void Release() {
         
-        if (!selecting) {
+        if (!selecting && grabbedObj) {
             if (followAnim != null)
                 StopCoroutine(followAnim);
 

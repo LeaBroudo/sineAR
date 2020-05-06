@@ -58,7 +58,7 @@ public class SineController : MonoBehaviour
     }
 
     public void setChildNames(int num) {
-        string numString = "_" + num.ToString();
+        string numString = "WIM_" + num.ToString();
         pivot.name += numString; 
         mesh.name += numString; 
         freqHandle.name += numString; 
@@ -98,11 +98,6 @@ public class SineController : MonoBehaviour
         
         //Set WIM to start
         wimScript.fullyInstantiated = true;
-
-
-        //TODO: DELETE AUDIO CONTROLLER 
-
-
 
     }
 

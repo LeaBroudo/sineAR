@@ -20,7 +20,7 @@ public class ChildWIM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        conversionFactor = 10f;
+        conversionFactor = 5f;
     }
 
     // Update is called once per frame
@@ -33,7 +33,7 @@ public class ChildWIM : MonoBehaviour
             
             //when this position changed, position of parent changed. 
             if (editing) {
-                meshParent.transform.localPosition += (getMeshWIMPosFromPlayerWIM() * conversionFactor) - getParentPosFromCam();
+                meshParent.transform.localPosition = (getMeshWIMPosFromPlayerWIM() * conversionFactor);
             }
             //make sure this position is same as parent
             else {
@@ -57,7 +57,7 @@ public class ChildWIM : MonoBehaviour
     }
 
     //Find wave position relative to camera
-    public Vector3 getParentPosFromCam() {
+    public Vector3 getParentPosFromCam() { //this is off
         return camera.transform.InverseTransformPoint(meshParent.transform.position);
     }
 
