@@ -57,6 +57,14 @@ public class SineController : MonoBehaviour
         mat.SetFloatArray(parentString, parentWaves);
     }
 
+    public void setChildNames(int num) {
+        string numString = "_" + num.ToString();
+        pivot.name += numString; 
+        mesh.name += numString; 
+        freqHandle.name += numString; 
+        amplHandle.name += numString; 
+    }
+
     public void setWIM() {
         
         //Create WIM Mesh 

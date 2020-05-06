@@ -6,12 +6,17 @@ public class MasterController : MonoBehaviour
 {
     public GameObject wavePrefab; 
     public Shader waveShader;
+    public GameObject wandPt1;
+    public GameObject wandPt2;
+
+    public GameObject waveParent;
     
     private List<GameObject> allWaves; 
 
     private Transform obj = null;
     private Vector3 offSet;
     private float dist; 
+    private Vector3 offset = new Vector3(0,1f,0f);
     
     // Start is called before the first frame update
     void Start()
@@ -52,14 +57,20 @@ public class MasterController : MonoBehaviour
                 if (obj.name.Split('_')[0] == "waveHandle") {
                     obj.GetComponent<SineController>().editingPos = true; 
                 }
+                print("Grabbed: "+obj.name);
 
             }
         }
     
         else if (Input.GetButtonUp("Fire1")) {
             
-            if (obj != null && obj.name.Split('_')[0] == "waveHandle") {
-                obj.GetComponent<SineController>().editingPos = false; 
+            if (obj != null) {
+                
+                print("Released: "+obj.name);
+
+                if (obj.name.Split('_')[0] == "waveHandle") {
+                    obj.GetComponent<SineController>().editingPos = false; 
+                }
             }
             
             obj = null;      // Let go of the object.
@@ -67,25 +78,28 @@ public class MasterController : MonoBehaviour
         
         //Drag selected object
         if (obj) {
-            
+            print("Obj: "+obj.name);
             Vector3 pos = ray.GetPoint(dist) + offSet;    
+
+            string objType = obj.name.Split('_')[0];
             
-            if (obj.name == "amplitudeHandle") {
+            if (objType == "amplitudeHandle") {
                 obj.GetComponent<AmplitudeController>().SetPosition(pos);
             }
-            else if (obj.name == "frequencyHandle") {
+            else if (objType == "frequencyHandle") {
                 obj.GetComponent<FrequencyController>().SetPosition(pos);
             }
-            else if (obj.name.Split('_')[0] == "waveHandle") {
+            else if (objType.Split('_')[0] == "waveHandle") {
                 obj.GetComponent<SineController>().SetPosition(pos);
             }
         }
     }
 
-    public void createNewWave() {
+    public GameObject createNewWave() {
         
         //Instantiate prefab
-        Vector3 spawnPos = this.transform.position + new Vector3(-10f,0,20f);
+        //Vector3 spawnPos = GetWandPt().transform.position + offset;
+        Vector3 spawnPos =wandPt1.transform.position + offset;
         GameObject newWave = Instantiate(wavePrefab, spawnPos, Quaternion.identity);
         allWaves.Add(newWave);
         newWave.name = "waveHandle_" + allWaves.Count;
@@ -98,45 +112,30 @@ public class MasterController : MonoBehaviour
         sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
         sineScript.setMaterial();
 
+        //Set Child names
+        sineScript.setChildNames(allWaves.Count);
+
         //Add WIM Child
         sineScript.setWIM();
 
         //Get AudioController script
         AudioController audioScript = newWave.GetComponent<AudioController>();
 
+        //Set parent
+        newWave.transform.SetParent(waveParent.transform, true); 
+
         //Set Object active
         newWave.SetActive(true);
+
+        return newWave;
         
-         /* For testing
-        //sineScript.changeFrequency(0.5f);
-        //sineScript.changeAmplitude(-0.5f);
-
-        sineScript.addCollidedParent(1f, 1f);
-         */
-
-
     }
 
     public void createSquareWave() {
         
-        //Instantiate prefab
-        Vector3 spawnPos = this.transform.position + new Vector3(-10f,0,20f);
-        GameObject newWave = Instantiate(wavePrefab, spawnPos, Quaternion.identity);
-        allWaves.Add(newWave);
-        newWave.name = "waveHandle_" + allWaves.Count;
-
-        //Get controller script
+        //Get prefab
+        GameObject newWave = createNewWave();
         SineController sineScript = newWave.GetComponent<SineController>();
-
-        //Add material and Shader 
-        sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
-        sineScript.setMaterial();
-
-        //Add WIM Child
-        sineScript.setWIM();
-
-        //Get AudioController script
-        AudioController audioScript = newWave.GetComponent<AudioController>();
         
         //Add parents
         //https://en.wikipedia.org/wiki/Square_wave
@@ -145,32 +144,15 @@ public class MasterController : MonoBehaviour
         for (int i=1; i<noiseReduce; i+=2) {            
             sineScript.addCollidedParent(0.2f * (2*Mathf.PI * (float)i), 1f/(float)i); //the 0.2f is so the mesh looks right
         }
-
-        //Set Object active
-        newWave.SetActive(true);
+         
         
     }
 
     public void createSawWave() {
         
-        //Instantiate prefab
-        Vector3 spawnPos = this.transform.position + new Vector3(-10f,0,20f);
-        GameObject newWave = Instantiate(wavePrefab, spawnPos, Quaternion.identity);
-        allWaves.Add(newWave);
-        newWave.name = "waveHandle_" + allWaves.Count;
-
-        //Get controller script
+        //Get prefab
+        GameObject newWave = createNewWave();
         SineController sineScript = newWave.GetComponent<SineController>();
-
-        //Add material and Shader 
-        sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
-        sineScript.setMaterial();
-
-        //Add WIM Child
-        sineScript.setWIM();
-
-        //Get AudioController script
-        AudioController audioScript = newWave.GetComponent<AudioController>();
         
         //Add parents
         //https://en.wikipedia.org/wiki/Sawtooth_wave
@@ -182,31 +164,14 @@ public class MasterController : MonoBehaviour
             //the extra -1f is to invert the entire wave
         }
 
-        //Set Object active
-        newWave.SetActive(true);
         
     }
 
     public void createTriWave() {
         
-        //Instantiate prefab
-        Vector3 spawnPos = this.transform.position + new Vector3(-10f,0,20f);
-        GameObject newWave = Instantiate(wavePrefab, spawnPos, Quaternion.identity);
-        allWaves.Add(newWave);
-        newWave.name = "waveHandle_" + allWaves.Count;
-
-        //Get controller script
+       //Get prefab
+        GameObject newWave = createNewWave();
         SineController sineScript = newWave.GetComponent<SineController>();
-
-        //Add material and Shader 
-        sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
-        sineScript.setMaterial();
-
-        //Add WIM Child
-        sineScript.setWIM();
-
-        //Get AudioController script
-        AudioController audioScript = newWave.GetComponent<AudioController>();
         
         //Add parents
         //https://en.wikipedia.org/wiki/Triangle_wave
@@ -217,9 +182,9 @@ public class MasterController : MonoBehaviour
             sineScript.addCollidedParent(0.3f * (2*Mathf.PI * mode), Mathf.Pow(-1f,i) * Mathf.Pow(mode, -2)); 
             //the 0.3f is so the mesh looks right
         }
-
-        //Set Object active
-        newWave.SetActive(true);
         
     }
+
+    //Returns which wave to use for spawning
+    //public GameObject GetWandPt() {}
 }
