@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class WandConductor : MonoBehaviour
 {
-    public bool setAmpl = false; //If true, wand controls amplitude, otherwise frequency
+    public bool setAmpl = true; //If true, wand controls amplitude, otherwise frequency
     
     private string objType = "";
+    private float colRad = 10f;
     
     //public Material freqMat;
     //public Material amplMat;
@@ -43,7 +44,7 @@ public class WandConductor : MonoBehaviour
 
             //Change Amplitude
             if (setAmpl) {
-                wave.GetComponent<SineController>().ChangeAmplitude(diff);
+                wave.GetComponent<SineController>().ChangeAmplitude(-diff);
             }
             //Change Frequency
             else {

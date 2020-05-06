@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MasterController : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class MasterController : MonoBehaviour
     public GameObject wandPt2;
 
     public GameObject waveParent;
+
+    public Button makeWave;
 
     public bool conduct = false; 
     
@@ -27,6 +30,7 @@ public class MasterController : MonoBehaviour
     {
         wavePrefab.SetActive(false);
         allWaves = new List<GameObject>();
+        makeWave.onClick.AddListener(createNewWaveTemp);
 
     }
 
@@ -107,6 +111,10 @@ public class MasterController : MonoBehaviour
                 obj.GetComponent<SineController>().SetPosition(pos);
             }
         }
+    }
+
+    public void createNewWaveTemp() {
+        GameObject newWave = createNewWave();
     }
 
     public GameObject createNewWave() {

@@ -10,7 +10,7 @@ public class ChildWIM : MonoBehaviour
     public GameObject meshParent;  
     public GameObject meshWIM;
 
-    public float conversionFactor = 3f;
+    public float conversionFactor = 20f;
 
     public SineController parentScript; 
 
