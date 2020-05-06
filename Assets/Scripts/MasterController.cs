@@ -6,10 +6,14 @@ public class MasterController : MonoBehaviour
 {
     public GameObject wavePrefab; 
     public Shader waveShader;
+    public GameObject wand1;
     public GameObject wandPt1;
+    public GameObject wand2;
     public GameObject wandPt2;
 
     public GameObject waveParent;
+
+    public bool conduct = false; 
     
     private List<GameObject> allWaves; 
 
@@ -40,6 +44,16 @@ public class MasterController : MonoBehaviour
         }
         else if (Input.GetKeyUp("t")) {
             createTriWave();
+        }
+        
+        //Set regular or conductor interaction
+        if (conduct) {
+            SetWandConduct(wand1); 
+            SetWandConduct(wand2); 
+        }
+        else {
+            SetWandRegular(wand1);
+            SetWandRegular(wand2);
         }
         
         //GET MOUSE INPUT TO MOVE HANDLES AROUND
@@ -185,6 +199,25 @@ public class MasterController : MonoBehaviour
         
     }
 
-    //Returns which wave to use for spawning
-    //public GameObject GetWandPt() {}
+    //Sets wand to conduct mode
+    public void SetWandConduct(GameObject wand) {
+        //Turn off WandController, turn on WandConductor
+        wand.GetComponent<WandController>().enabled = false; 
+        wand.GetComponent<WandConductor>().enabled = true; 
+
+        //Turn off box collider, turn on sphere collider
+        wand.GetComponent<BoxCollider>().enabled = false; 
+        wand.GetComponent<SphereCollider>().enabled = true; 
+    }
+
+    //Sets wand to regular mode
+    public void SetWandRegular(GameObject wand) {
+        //Turn off WandConductor, turn on WandController
+        wand.GetComponent<WandConductor>().enabled = false; 
+        wand.GetComponent<WandController>().enabled = true; 
+
+        //Turn off sphere collider, turn on box collider
+        wand.GetComponent<SphereCollider>().enabled = false; 
+        wand.GetComponent<BoxCollider>().enabled = true; 
+    }
 }

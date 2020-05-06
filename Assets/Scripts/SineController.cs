@@ -185,9 +185,7 @@ public class SineController : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         //print(this.name+" collided: "+other.name);
         
-        //If currently editing position, do nothing
-        //if (!editingPos && other.name == "pivot") {
-        if (other.name == "pivot") {
+        if (other.name.Split('_')[0] == "pivot") {
             GameObject otherWave = other.gameObject.transform.parent.gameObject; 
             SineController otherScript = otherWave.GetComponent<SineController>();
 
@@ -241,6 +239,17 @@ public class SineController : MonoBehaviour
     public void SetPosition(Vector3 pos) {
         this.transform.position = pos; 
     }
+
+    public void ChangeFrequency(float f) {
+        Vector3 pos = freqHandle.transform.position + new Vector3(f,0,0);
+        freqHandle.GetComponent<FrequencyController>().SetPosition(pos);
+    }
+
+    public void ChangeAmplitude(float a) {
+        Vector3 pos = amplHandle.transform.position + new Vector3(0,a,0);
+        amplHandle.GetComponent<AmplitudeController>().SetPosition(pos);
+    }
+                
 
     /* 
     public float computeWaveAtPoint(float x) {

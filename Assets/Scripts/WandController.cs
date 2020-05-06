@@ -11,7 +11,6 @@ public class WandController : MonoBehaviour
     public Button selectButton;
 
     public GameObject grabbedObj = null;
-    public GameObject initGrabbedObjParent = null;
 
     private string objType = "";
     
@@ -33,42 +32,13 @@ public class WandController : MonoBehaviour
         //Get other wand's script
         otherCtrl = otherWand.GetComponent<WandController>();
         selectButton.onClick.AddListener(ClickSelect);
+
     }
 
     // Update is called once per frame
     void Update()
     {   
-        //If this wand is selecting, see if it grabbed anything to move
-        /* 
-        if (selecting) {
-
-            try {
-                GameObject go = grabbedObj;
-            }
-            catch{
-                //Nothing is grabbed
-                return;
-            }
-            
-            //Drag selected object
-            if (grabbedObj != null) {
-                
-                print("Dragging: "+grabbedObj.name);
-                string objType = grabbedObj.name.Split('_')[0];
-            
-                if (objType == "amplitudeHandle") {
-                    //grabbedObj.GetComponent<AmplitudeController>().SetPosition(pos);
-                }
-                else if (objType == "frequencyHandle") {
-                    //grabbedObj.GetComponent<FrequencyController>().SetPosition(pos);
-                }
-                else if (objType.Split('_')[0] == "waveHandle") {
-                    //grabbedObj.GetComponent<SineController>().SetPosition(pos);
-                }
-
-            }
-        }
-        */
+    
     }
 
     private void OnTriggerEnter(Collider other) {

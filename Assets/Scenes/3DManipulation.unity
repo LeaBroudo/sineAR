@@ -401,6 +401,19 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 344682607}
   m_PrefabAsset: {fileID: 0}
+--- !u!135 &101527441
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101527439}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: -4.4690843}
 --- !u!54 &101527443
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -445,13 +458,25 @@ MonoBehaviour:
   otherWand: {fileID: 1062990546}
   selectButton: {fileID: 1896865063}
   grabbedObj: {fileID: 0}
-  initGrabbedObjParent: {fileID: 0}
   freqMat: {fileID: 2100000, guid: d96f4fd7245b448cbb03beff6a107eb1, type: 2}
   amplMat: {fileID: 2100000, guid: f671f8860e78a407bbf3683ef280c57a, type: 2}
   handleCyl: {fileID: 1505810085}
   handleTorus: {fileID: 83204445}
   wandPt: {fileID: 1316552052}
   selecting: 0
+--- !u!114 &101527447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101527439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52ab1bfdceeb84900b86ae9c67673e67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setAmpl: 0
 --- !u!21 &136909373
 Material:
   serializedVersion: 6
@@ -2156,9 +2181,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wavePrefab: {fileID: 1011520733}
   waveShader: {fileID: 4800000, guid: dd1bc80052c4545b5993ffe6675e6836, type: 3}
+  wand1: {fileID: 101527439}
   wandPt1: {fileID: 1316552052}
+  wand2: {fileID: 1062990546}
   wandPt2: {fileID: 900791437}
   waveParent: {fileID: 1566679236}
+  conduct: 0
 --- !u!1 &1011520733
 GameObject:
   m_ObjectHideFlags: 0
@@ -2518,6 +2546,19 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 793105531}
   m_PrefabAsset: {fileID: 0}
+--- !u!135 &1062990547
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062990546}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: -4.4690843}
 --- !u!4 &1062990549 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8941876322313205441, guid: 2d2c4b9b459204d5bb263f6a014c4717,
@@ -2568,13 +2609,25 @@ MonoBehaviour:
   otherWand: {fileID: 101527439}
   selectButton: {fileID: 1896865063}
   grabbedObj: {fileID: 0}
-  initGrabbedObjParent: {fileID: 0}
   freqMat: {fileID: 2100000, guid: d96f4fd7245b448cbb03beff6a107eb1, type: 2}
   amplMat: {fileID: 2100000, guid: f671f8860e78a407bbf3683ef280c57a, type: 2}
   handleCyl: {fileID: 2106642912}
   handleTorus: {fileID: 1593269747}
   wandPt: {fileID: 900791437}
   selecting: 0
+--- !u!114 &1062990554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062990546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52ab1bfdceeb84900b86ae9c67673e67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setAmpl: 1
 --- !u!1 &1065814222
 GameObject:
   m_ObjectHideFlags: 0
@@ -3149,9 +3202,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wavePrefab: {fileID: 1011520733}
   waveShader: {fileID: 4800000, guid: dd1bc80052c4545b5993ffe6675e6836, type: 3}
+  wand1: {fileID: 101527439}
   wandPt1: {fileID: 1316552052}
+  wand2: {fileID: 1062990546}
   wandPt2: {fileID: 900791437}
   waveParent: {fileID: 1566679236}
+  conduct: 0
 --- !u!1 &1516409777
 GameObject:
   m_ObjectHideFlags: 0
