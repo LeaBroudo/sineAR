@@ -7,6 +7,9 @@ TagManager:
   - selected
   - buttonTab
   - LearnPage
+  - wave
+  - frequencyHandle
+  - amplitudeHandle
   layers:
   - Default
   - TransparentFX
