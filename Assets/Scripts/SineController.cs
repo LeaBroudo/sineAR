@@ -58,7 +58,8 @@ public class SineController : MonoBehaviour
     }
 
     public void setChildNames(int num) {
-        string numString = "WIM_" + num.ToString();
+        //string numString = "WIM_" + num.ToString();
+        string numString = "_" + num.ToString();
         pivot.name += numString; 
         mesh.name += numString; 
         freqHandle.name += numString; 
@@ -182,7 +183,7 @@ public class SineController : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        //print(this.name+" collided: "+other.name);
+        print(this.name+" collided: "+other.name);
         
         if (other.name.Split('_')[0] == "pivot") {
             GameObject otherWave = other.gameObject.transform.parent.gameObject; 
