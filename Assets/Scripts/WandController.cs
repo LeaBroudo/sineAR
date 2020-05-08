@@ -23,6 +23,9 @@ public class WandController : MonoBehaviour
 
     public bool selecting = false; 
 
+    public GameObject WIM; 
+    private ChildWIM wimScript;
+
     private Vector3 offset = new Vector3(0f,0f,3f);
     private IEnumerator followAnim;
 
@@ -32,6 +35,7 @@ public class WandController : MonoBehaviour
         //Get other wand's script
         otherCtrl = otherWand.GetComponent<WandController>();
         selectButton.onClick.AddListener(ClickSelect);
+        wimScript = WIM.GetComponent<ChildWIM>();
 
     }
 
@@ -56,7 +60,7 @@ public class WandController : MonoBehaviour
             grabbedObj = other.gameObject;
             
             if (objType == "WIMwave") {
-                grabbedObj.GetComponent<ChildWIM>().editing = true;
+                wimScript.editChild(grabbedObj, true);
             }
             
             if (followAnim != null)
@@ -138,8 +142,8 @@ public class WandController : MonoBehaviour
 
             print("Released: "+grabbedObj.name + " first: "+grabbedObj.name.Split('_')[0]);
             if (grabbedObj.name.Split('_')[0] == "WIMwave") {
-                print("hii");
-                grabbedObj.GetComponent<ChildWIM>().editing = false;
+                //print("hii");
+                wimScript.editChild(grabbedObj, false);
             }
             grabbedObj = null;
         }

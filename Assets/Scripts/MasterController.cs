@@ -128,7 +128,7 @@ public class MasterController : MonoBehaviour
 
         //Get controller script
         SineController sineScript = newWave.GetComponent<SineController>();
-        newWave.GetComponent<ChildWIM>().enabled = false; 
+        //newWave.GetComponent<ChildWIM>().enabled = false; 
 
         //Add material and Shader 
         sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
