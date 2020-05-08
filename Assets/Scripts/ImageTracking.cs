@@ -5,6 +5,7 @@ using System.Collections;
 public class ImageTracking : MonoBehaviour, ITrackableEventHandler {
 	
 	public GameObject childObject; 
+    public GameObject childObject2; 
     private TrackableBehaviour mTrackableBehaviour;
 	private bool state = false;
 	
@@ -19,6 +20,11 @@ public class ImageTracking : MonoBehaviour, ITrackableEventHandler {
     void Update() 
     {
         childObject.SetActive(state);
+
+        try {
+            childObject2.SetActive(state);
+        }
+        catch {}
     }
 	
 	public void OnTrackableStateChanged(

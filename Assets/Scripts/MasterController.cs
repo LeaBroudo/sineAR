@@ -118,6 +118,10 @@ public class MasterController : MonoBehaviour
     }
 
     public GameObject createNewWave() {
+
+        if (!waveParent.active) {
+            throw new System.ArgumentException("Wave's parent tracker must be tracking to create new wave.");
+        }
         
         //Instantiate prefab
         //Vector3 spawnPos = GetWandPt().transform.position + offset;

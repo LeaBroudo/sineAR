@@ -66,6 +66,11 @@ public class SineController : MonoBehaviour
         amplHandle.name += numString; 
     }
 
+    public void setWIMNames() {
+        pivot.name = "pivotWIM"; 
+        mesh.name = "waveMeshWIM"; 
+    }
+
     public void setWIM() {
         
         //Create WIM Mesh 
@@ -79,6 +84,7 @@ public class SineController : MonoBehaviour
 
         //Delete Handles and Audio 
         SineController sineScriptWIM = meshWIM.GetComponent<SineController>();
+        sineScriptWIM.setWIMNames();
         Destroy(sineScriptWIM.freqHandle);
         Destroy(sineScriptWIM.amplHandle);
         meshWIM.GetComponent<AudioSource>().enabled = false; 
