@@ -184,7 +184,6 @@ public class SineController : MonoBehaviour
             SineController otherScript = otherWave.GetComponent<SineController>();
 
             //Only combine if both are basewaves and other wave not editing position
-            //if (!otherScript.editingPos && isBaseWave() && otherScript.isBaseWave()) {
             if (isBaseWave() && otherScript.isBaseWave()) {
 
                 //Move own freq and amplitude to parent's array
@@ -211,7 +210,7 @@ public class SineController : MonoBehaviour
 
                 //Destroy the other wave and its WIM child
                 string name = otherWave.name; 
-                Destroy(otherScript.meshWIM);
+                WIM.GetComponent<ChildWIM>().CleanUp(otherScript.meshWIM);
                 Destroy(otherWave);
                 print("deleted: "+ name);
 

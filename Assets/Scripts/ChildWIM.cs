@@ -129,4 +129,15 @@ public class ChildWIM : MonoBehaviour
         }
     }
 
+    public void CleanUp(GameObject child) {
+    
+        if (allWaves.ContainsKey(child)) {
+            allWaves.Remove(child);
+        }
+        if (editingWIMWaves.Contains(child.name)) {
+            editingWIMWaves.Remove(child.name);
+        }
+        Destroy(child);
+    }
+
 }
