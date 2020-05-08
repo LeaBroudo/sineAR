@@ -1446,13 +1446,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 417501647}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7e95ce882e8c4ce8abbbc4c503c850c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  childObject: {fileID: 0}
-  childObject2: {fileID: 0}
+  childObject: {fileID: 792347661}
+  childObject2: {fileID: 96864618}
 --- !u!33 &417501649
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1999,6 +1999,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 771195891}
   m_CullTransparentMesh: 0
+--- !u!1 &792347661
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 792347662}
+  m_Layer: 0
+  m_Name: worldItems
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &792347662
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792347661}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.6797154, y: 1.6797154, z: 1.6797154}
+  m_Children:
+  - {fileID: 2103395817}
+  m_Father: {fileID: 825814613}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &793105531
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2200,7 +2231,7 @@ Transform:
   m_LocalPosition: {x: 0.26999855, y: 0.1, z: 0.1}
   m_LocalScale: {x: 0.59533894, y: 0.59533894, z: 0.59533894}
   m_Children:
-  - {fileID: 2103395817}
+  - {fileID: 792347662}
   - {fileID: 1027191184}
   m_Father: {fileID: 239794985}
   m_RootOrder: 0
@@ -2219,6 +2250,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1027191183}
   camera: {fileID: 1506822247}
+  waveGround: {fileID: 1146249708}
+  waveGroundWIM: {fileID: 2103395816}
+  worldItems: {fileID: 792347661}
   conversionFactor: 0
 --- !u!1 &827987423
 GameObject:
@@ -4809,10 +4843,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2103395816}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.041285, y: -0.11758008, z: -17.082705}
-  m_LocalScale: {x: 0.6993495, y: 0.6993495, z: 6.34914}
+  m_LocalPosition: {x: 0.77394104, y: -0.07, z: 5.000847}
+  m_LocalScale: {x: 0.41635, y: 0.41635, z: 3.7798903}
   m_Children: []
-  m_Father: {fileID: 825814613}
+  m_Father: {fileID: 792347662}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2103395818

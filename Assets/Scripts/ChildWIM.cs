@@ -6,6 +6,9 @@ public class ChildWIM : MonoBehaviour
 {
     public GameObject player; 
     public GameObject camera;
+    public GameObject waveGround; 
+    public GameObject waveGroundWIM; 
+    public GameObject worldItems; 
 
     //public GameObject meshParent;  
     //public GameObject meshWIM;
@@ -21,11 +24,15 @@ public class ChildWIM : MonoBehaviour
     void Start()
     {
         conversionFactor = 5f;
+        waveGroundWIM.transform.localScale = waveGround.transform.localScale / conversionFactor;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Update waveGroundWIM
+        waveGroundWIM.transform.localPosition = getPosFromCam(waveGround) / conversionFactor;
+        waveGroundWIM.transform.rotation = player.transform.rotation * getRotFromCam(waveGround);
         
         GameObject child, parent; 
         Vector3 childPosFromPlayerWIM, parentPosFromCam;
@@ -37,10 +44,10 @@ public class ChildWIM : MonoBehaviour
 
             child = waveSet.Key;
             parent = waveSet.Value; 
-            childPosFromPlayerWIM = getChildPosFromPlayerWIM(child, parent);
-            parentPosFromCam = getParentPosFromCam(child, parent);
-            childRotFromPlayerWIM = getChildRotFromPlayerWIM(child, parent);
-            parentRotFromCam = getParentRotFromCam(child, parent);
+            childPosFromPlayerWIM = getPosFromPlayerWIM(child);
+            parentPosFromCam = getPosFromCam(parent);
+            childRotFromPlayerWIM = getRotFromPlayerWIM(child);
+            parentRotFromCam = getRotFromCam(parent);
 
             //But if child is in editing hash, then move parent
             if (editingWIMWaves.Contains(child.name)) {
@@ -82,26 +89,23 @@ public class ChildWIM : MonoBehaviour
     //Get parent pos from base, and child pos from WIM(this)
 
     //Find wave position relative to camera
-    public Vector3 getParentPosFromCam(GameObject child, GameObject parent) { //this is off
+    public Vector3 getPosFromCam(GameObject parent) { 
         return camera.transform.InverseTransformPoint(parent.transform.position);
     }
 
     //Find meshWIM position relative to PlayerWIM
-    public Vector3 getChildPosFromPlayerWIM(GameObject child, GameObject parent) {
+    public Vector3 getPosFromPlayerWIM(GameObject child) {
         return player.transform.InverseTransformPoint(child.transform.position);
     }
 
      //Find wave rotation relative to camera
-    public Quaternion getParentRotFromCam(GameObject child, GameObject parent) {
-        //Quaternion.Inverse(Target.transform.rotation) * WorldRotation;
+    public Quaternion getRotFromCam(GameObject parent) {
         return Quaternion.Inverse(camera.transform.rotation) * parent.transform.rotation;
-        //camera.transform.InverseTransformPoint(meshParent.transform.position);
     }
 
     //Find meshWIM rotation relative to PlayerWIM
-    public Quaternion getChildRotFromPlayerWIM(GameObject child, GameObject parent) {
+    public Quaternion getRotFromPlayerWIM(GameObject child) {
         return Quaternion.Inverse(player.transform.rotation) * child.transform.rotation;
-        //return player.transform.InverseTransformPoint(meshWIM.transform.position);
     }
 
     public void addWaveChild(GameObject child, GameObject parent) {
@@ -110,7 +114,8 @@ public class ChildWIM : MonoBehaviour
         allWaves.Add(child, parent);
         
         //Set position and scale
-        child.transform.localPosition = getParentPosFromCam(child, parent) / conversionFactor;
+        child.transform.SetParent(worldItems.transform);
+        child.transform.localPosition = getPosFromCam(parent) / conversionFactor;
         child.transform.localScale /= conversionFactor * 0.5f;
     }
 
