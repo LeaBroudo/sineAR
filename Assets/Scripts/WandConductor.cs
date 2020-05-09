@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class WandConductor : MonoBehaviour
 {
-    public bool setAmpl = true; //If true, wand controls amplitude, otherwise frequency
-    
+    public bool setAmpl = false; //If true, wand controls amplitude, otherwise frequency
+    public GameObject wandPt; 
     private string objType = "";
     private float colRad = 10f;
     
@@ -35,11 +35,12 @@ public class WandConductor : MonoBehaviour
             
             GameObject wave = waveEntry.Key;
             float dist = waveEntry.Value;
-            float newDist = (this.transform.position - wave.transform.position).magnitude;
+            float newDist = (wandPt.transform.position - wave.transform.position).magnitude;
             tempNearby.Add(wave, newDist);
 
             //If wand moves closer to wave, value goes up
-            float diff = (newDist - dist) * 10;
+            //float diff = (newDist - dist) * 10;
+            float diff = (newDist - dist);
             print("diff: "+diff);
 
             //Change Amplitude
@@ -65,7 +66,7 @@ public class WandConductor : MonoBehaviour
 
             GameObject wave = other.gameObject;
             
-            float dist = (this.transform.position - wave.transform.position).magnitude;
+            float dist = (wandPt.transform.position - wave.transform.position).magnitude;
             
             if (nearbyWaves.ContainsKey(wave)) {
                 nearbyWaves[wave] = dist; 

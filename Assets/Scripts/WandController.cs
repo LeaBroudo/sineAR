@@ -34,7 +34,6 @@ public class WandController : MonoBehaviour
     {
         //Get other wand's script
         otherCtrl = otherWand.GetComponent<WandController>();
-        selectButton.onClick.AddListener(ClickSelect);
         wimScript = WIM.GetComponent<ChildWIM>();
 
     }
