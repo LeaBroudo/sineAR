@@ -116,7 +116,7 @@ public class ChildWIM : MonoBehaviour
         //Set position and scale
         child.transform.SetParent(worldItems.transform);
         child.transform.localPosition = getPosFromCam(parent) / conversionFactor;
-        child.transform.localScale /= conversionFactor * 0.5f;
+        child.transform.localScale /= conversionFactor;
     }
 
     public void editChild(GameObject child, bool edit) {

@@ -30,7 +30,7 @@ public class MasterController : MonoBehaviour
     {
         wavePrefab.SetActive(false);
         allWaves = new List<GameObject>();
-        makeWave.onClick.AddListener(createNewWaveTemp);
+        makeWave.onClick.AddListener(createSineWave);
 
     }
 
@@ -113,30 +113,27 @@ public class MasterController : MonoBehaviour
         }
     }
 
-    public void createNewWaveTemp() {
+    public void createSineWave() {
         GameObject newWave = createNewWave();
     }
 
     public GameObject createNewWave() {
-
+        ///* 
         if (!waveParent.active) {
             throw new System.ArgumentException("Wave's parent tracker must be tracking to create new wave.");
         }
+        //*/
         
         //Instantiate prefab
-        //Vector3 spawnPos = GetWandPt().transform.position + offset;
-        Vector3 spawnPos =wandPt1.transform.position + offset;
+        Vector3 spawnPos = wandPt1.transform.position + offset;
         GameObject newWave = Instantiate(wavePrefab, spawnPos, Quaternion.identity);
+        newWave.SetActive(true);
         allWaves.Add(newWave);
         newWave.name = "waveHandle_" + allWaves.Count;
 
         //Get controller script
         SineController sineScript = newWave.GetComponent<SineController>();
         //newWave.GetComponent<ChildWIM>().enabled = false; 
-
-        //Add material and Shader 
-        sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
-        sineScript.setMaterial();
 
         //Set Child names
         sineScript.setChildNames(allWaves.Count);
@@ -148,10 +145,7 @@ public class MasterController : MonoBehaviour
         AudioController audioScript = newWave.GetComponent<AudioController>();
 
         //Set parent
-        newWave.transform.SetParent(waveParent.transform, true); 
-
-        //Set Object active
-        newWave.SetActive(true);
+        newWave.transform.SetParent(waveParent.transform, true);
 
         return newWave;
         
