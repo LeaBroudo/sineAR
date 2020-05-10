@@ -6,17 +6,22 @@ using UnityEngine.UI;
 public class MasterController : MonoBehaviour
 {
     public GameObject wavePrefab; 
+    public GameObject waveParent;
     public Shader waveShader;
     public GameObject wand1;
     public GameObject wandPt1;
     public GameObject wand2;
     public GameObject wandPt2;
 
-    public GameObject waveParent;
+    public Button modifierWand1;
+    private bool amplWand1; 
+    public Button modifierWand2;
+    private bool amplWand2; 
 
     public Button makeWave;
 
-    public bool conduct = false; 
+    public bool conduct; 
+    public Button modeButton; 
     
     private List<GameObject> allWaves; 
 
@@ -30,7 +35,19 @@ public class MasterController : MonoBehaviour
     {
         wavePrefab.SetActive(false);
         allWaves = new List<GameObject>();
+        
         makeWave.onClick.AddListener(createSineWave);
+        modeButton.onClick.AddListener(changeMode);
+
+        modifierWand1.onClick.AddListener(changeSettingWand1);
+        modifierWand2.onClick.AddListener(changeSettingWand2);
+        amplWand1 = false;
+        amplWand2 = false;
+        changeSettingWand1();
+        changeSettingWand2();
+        
+        conduct = true;
+        changeMode();
 
     }
 
@@ -48,16 +65,6 @@ public class MasterController : MonoBehaviour
         }
         else if (Input.GetKeyUp("t")) {
             createTriWave();
-        }
-        
-        //Set regular or conductor interaction
-        if (conduct) {
-            SetWandConduct(wand1); 
-            SetWandConduct(wand2); 
-        }
-        else {
-            SetWandRegular(wand1);
-            SetWandRegular(wand2);
         }
         
         //GET MOUSE INPUT TO MOVE HANDLES AROUND
@@ -226,4 +233,52 @@ public class MasterController : MonoBehaviour
         wand.GetComponent<SphereCollider>().enabled = false; 
         wand.GetComponent<BoxCollider>().enabled = true; 
     }
+
+    public void changeMode() {
+        conduct = !conduct; 
+
+        if (conduct) {
+            print("Conductor Mode");
+            modeButton.GetComponentInChildren<Text>().text = "Conductor Mode";
+
+            SetWandConduct(wand1); 
+            SetWandConduct(wand2); 
+
+            //Update wand modifier buttons
+            modifierWand1.GetComponentInChildren<Text>().text = amplWand1? "Affecting \nAmplitude" : "Affecting \nFrequency";
+            modifierWand2.GetComponentInChildren<Text>().text = amplWand2? "Affecting \nAmplitude" : "Affecting \nFrequency";
+
+        }
+        else {
+            print("Wand Mode");
+            modeButton.GetComponentInChildren<Text>().text = "Wand Mode";
+
+            SetWandRegular(wand1);
+            SetWandRegular(wand2);
+
+            //Update wand modifier buttons
+            modifierWand1.GetComponentInChildren<Text>().text = "To use set \nConductor Mode";
+            modifierWand2.GetComponentInChildren<Text>().text = "To use set \nConductor Mode";
+
+        }
+    }
+
+    public void changeSettingWand1() {
+        amplWand1 = !amplWand1;
+        
+        wand1.GetComponent<WandConductor>().setAmpl = amplWand1;
+        if (conduct) {
+            modifierWand1.GetComponentInChildren<Text>().text = amplWand1? "Affecting \nAmplitude" : "Affecting \nFrequency";
+        }
+    }
+
+    public void changeSettingWand2() {
+        amplWand2 = !amplWand2;
+        
+        wand2.GetComponent<WandConductor>().setAmpl = amplWand2;
+        if (conduct) {
+            modifierWand2.GetComponentInChildren<Text>().text = amplWand2? "Affecting \nAmplitude" : "Affecting \nFrequency";
+        }
+    }
+
 }
