@@ -41,6 +41,8 @@ public class SineController : MonoBehaviour
     private bool in3DManipulation;
     
     private LineRenderer lineRenderer;
+
+    private bool WIMwaveDeleted = false; 
     
     void Awake()
     {
@@ -66,12 +68,14 @@ public class SineController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //Compute this wave and WIM wave
         DrawTravellingSineWave(lineRenderer, meshAmpl, meshFreq, 1f);
 
-        if (in3DManipulation) {
+        if (in3DManipulation && !WIMwaveDeleted) {
             DrawTravellingSineWave(lineWIM, meshAmpl, meshFreq, 1f);
         }
+
     }
 
     public void setChildNames(int num) {
@@ -208,6 +212,21 @@ public class SineController : MonoBehaviour
         return parentWaves;
     }
 
+    public void deleteThis() {
+        //Destroy this wave and its WIM child
+
+        if (in3DManipulation) {
+            WIMwaveDeleted = true;
+            WIM.GetComponent<ChildWIM>().CleanUp(waveWIM);
+            //yield return new WaitForSeconds(0.1f);
+            //Destroy(waveWIM);
+        }
+
+        print("deleted: "+ this.name);
+        
+        //Destroy(this);
+    }
+    
     private void OnTriggerEnter(Collider other) {
         print(this.name+" collided: "+other.name);
         

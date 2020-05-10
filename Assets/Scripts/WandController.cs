@@ -8,7 +8,8 @@ public class WandController : MonoBehaviour
     
     public GameObject otherWand; 
     private WandController otherCtrl; 
-    public Button selectButton;
+    //public Button selectButton;
+    //public Button deleteButton;
 
     public GameObject grabbedObj = null;
 
@@ -22,6 +23,7 @@ public class WandController : MonoBehaviour
     public GameObject wandPt;
 
     public bool selecting = false; 
+    public bool deleting = false; 
 
     public GameObject WIM; 
     private ChildWIM wimScript;
@@ -46,14 +48,22 @@ public class WandController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         
+        string[] fullName = other.name.Split('_');
+        objType = fullName[0]; 
+
+        print("del: "+deleting+" type: "+objType);
+        
+        //Delete wave
+        if (deleting && objType == "waveHandle") {
+            print("about to call deleteThis");
+            other.gameObject.GetComponent<SineController>().deleteThis();
+            return;
+        }
         //Do nothing if selection button not pressed
-        if (!selecting) {
+        else if (!selecting) {
             print("Can't grab, not currently selecting.");
             return;
         }
-        
-        string[] fullName = other.name.Split('_');
-        objType = fullName[0]; 
 
         if (objType == "waveHandle" || objType == "amplitudeHandle" || objType == "frequencyHandle" || objType == "WIMwave") {
             grabbedObj = other.gameObject;
@@ -134,6 +144,11 @@ public class WandController : MonoBehaviour
         selecting = !selecting;
 
         Release();
+    }
+
+    public void ClickDelete() {
+        print("delete: "+deleting);
+        deleting = !deleting;
     }
 
     public void Release() {
