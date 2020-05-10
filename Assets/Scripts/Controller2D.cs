@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Controller2D : MonoBehaviour
@@ -51,6 +52,8 @@ public class Controller2D : MonoBehaviour
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
             {
+                if (EventSystem.current.IsPointerOverGameObject())
+                    return;
                 /*Debug.Log("touch phase is stationary or moved");*/
                 RaycastHit hit;
                 Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.GetTouch(0).position);
@@ -77,11 +80,11 @@ public class Controller2D : MonoBehaviour
                         /*Debug.Log("FREQUENCY _______________________HANDLE");*/
                         obj.GetComponent<FrequencyController>().SetPosition(pos);
                     }
-                    /*else if (obj.name.Split('_')[0] == "waveHandle")*/
-                    else if (obj.name == "waveHandle_1")
+                    else if (obj.name.Split('_')[0] == "waveHandle")
+                    /*else if (obj.name == "waveHandle_1")*/
                     {
                         /*Debug.Log("WAVEHANDLE _______________________HANDLE");*/
-                        pos.x = obj.position.x;
+                        /*pos.x = obj.position.x;*/
                         if (pos.y > 5)
                             pos.y = 5;
                         if (pos.y < -6)
