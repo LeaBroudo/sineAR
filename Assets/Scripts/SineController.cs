@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class SineController : MonoBehaviour
 {
@@ -36,6 +37,8 @@ public class SineController : MonoBehaviour
 
     public float freqConversion; 
     public float amplConversion; 
+
+    private bool in3DManipulation;
     
     private LineRenderer lineRenderer;
     
@@ -47,16 +50,17 @@ public class SineController : MonoBehaviour
 
         parentWaves = new float[maxParents * 2];
         lineRenderer = mesh.GetComponent<LineRenderer>();
-        //addCollidedParent(2,2);
-        //addCollidedParent(3,1);
-        /* 
-        int noiseReduce = 50; //The greater this number, the more square the wave
-        for (int i=1; i<noiseReduce; i+=2) {            
-            addCollidedParent(0.2f * (2*Mathf.PI * (float)i), 1f/(float)i); //the 0.2f is so the mesh looks right
-        }
-        */
         
-
+        //Don't set WIM if not in correct scene
+        if (SceneManager.GetActiveScene().name == "3DManipulation") {
+            //print("In 3DManipulation");
+            in3DManipulation = true;
+        }
+        else {
+            //print("Not In 3DManipulation");
+            in3DManipulation = false;
+        }
+        
     }
 
     // Update is called once per frame
@@ -64,7 +68,10 @@ public class SineController : MonoBehaviour
     {
         //Compute this wave and WIM wave
         DrawTravellingSineWave(lineRenderer, meshAmpl, meshFreq, 1f);
-        DrawTravellingSineWave(lineWIM, meshAmpl, meshFreq, 1f);
+
+        if (in3DManipulation) {
+            DrawTravellingSineWave(lineWIM, meshAmpl, meshFreq, 1f);
+        }
     }
 
     public void setChildNames(int num) {
@@ -82,6 +89,10 @@ public class SineController : MonoBehaviour
     }
 
     public void setWIM() {
+        
+        if (!in3DManipulation) {
+            return;
+        }
         
         //Create WIM Mesh 
         //Instantiate(Object original, Transform parent);
@@ -154,12 +165,20 @@ public class SineController : MonoBehaviour
 
         if (isBaseColor && !isBaseWave()) {
             this.GetComponent<MeshRenderer>().material = nonBaseMat;
-            waveWIM.GetComponent<MeshRenderer>().material = nonBaseMat;
+
+            if (in3DManipulation) {
+                waveWIM.GetComponent<MeshRenderer>().material = nonBaseMat;
+            }
+
             isBaseColor = false; 
         }
         else if (!isBaseColor && isBaseWave()) {
             this.GetComponent<MeshRenderer>().material = baseMat;
-            waveWIM.GetComponent<MeshRenderer>().material = baseMat;
+
+            if (in3DManipulation) {
+                waveWIM.GetComponent<MeshRenderer>().material = baseMat;
+            }
+            
             isBaseColor = true; 
         }
 
@@ -223,7 +242,11 @@ public class SineController : MonoBehaviour
 
                 //Destroy the other wave and its WIM child
                 string name = otherWave.name; 
-                WIM.GetComponent<ChildWIM>().CleanUp(otherScript.waveWIM);
+
+                if (in3DManipulation) {
+                    WIM.GetComponent<ChildWIM>().CleanUp(otherScript.waveWIM);
+                }
+    
                 Destroy(otherWave);
                 print("deleted: "+ name);
 
