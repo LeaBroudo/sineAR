@@ -103,7 +103,7 @@ public class MasterController : MonoBehaviour
         
         //Drag selected object
         if (obj) {
-            print("Obj: "+obj.name);
+            //print("Obj: "+obj.name);
             Vector3 pos = ray.GetPoint(dist) + offSet;    
 
             string objType = obj.name.Split('_')[0];

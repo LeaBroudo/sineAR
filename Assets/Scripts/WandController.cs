@@ -105,9 +105,12 @@ public class WandController : MonoBehaviour
         {
             Vector3 pos = Vector3.Lerp(initPos, finalPos, 1f);
 
-            if (objType == "waveHandle" || objType == "WIMwave"){
+            if (objType == "waveHandle"){
                 grabbedObj.GetComponent<SineController>().SetPosition(pos);
             } 
+            else if (objType == "WIMwave") {
+                grabbedObj.transform.position = pos;
+            }
             else if (objType == "amplitudeHandle") {
                 grabbedObj.GetComponent<AmplitudeController>().SetPosition(pos);
             }
