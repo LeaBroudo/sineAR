@@ -9,13 +9,6 @@ public class WandConductor : MonoBehaviour
     private string objType = "";
     private float colRad = 10f;
     
-    //public Material freqMat;
-    //public Material amplMat;
-
-    //public GameObject handleCyl;
-    //public GameObject handleTorus;
-    //public GameObject wandPt;
-
     private Dictionary<GameObject,float> nearbyWaves = new Dictionary<GameObject,float>();
 
     // Start is called before the first frame update
@@ -33,23 +26,28 @@ public class WandConductor : MonoBehaviour
         //Iterate through nearby waves and change their characteristics
         foreach (KeyValuePair<GameObject,float> waveEntry in nearbyWaves) {
             
-            GameObject wave = waveEntry.Key;
-            float dist = waveEntry.Value;
-            float newDist = (wandPt.transform.position - wave.transform.position).magnitude;
-            tempNearby.Add(wave, newDist);
+            try {
+                GameObject wave = waveEntry.Key;
+                float dist = waveEntry.Value;
+                float newDist = (wandPt.transform.position - wave.transform.position).magnitude;
+                tempNearby.Add(wave, newDist);
 
-            //If wand moves closer to wave, value goes up
-            //float diff = (newDist - dist) * 10;
-            float diff = (newDist - dist);
-            print("diff: "+diff);
+                //If wand moves closer to wave, value goes up
+                //float diff = (newDist - dist) * 10;
+                float diff = (newDist - dist);
+                print("diff: "+diff);
 
-            //Change Amplitude
-            if (setAmpl) {
-                wave.GetComponent<SineController>().ChangeAmplitude(-diff);
+                //Change Amplitude
+                if (setAmpl) {
+                    wave.GetComponent<SineController>().ChangeAmplitude(-diff);
+                }
+                //Change Frequency
+                else {
+                    wave.GetComponent<SineController>().ChangeFrequency(diff);
+                }
             }
-            //Change Frequency
-            else {
-                wave.GetComponent<SineController>().ChangeFrequency(diff);
+            catch (MissingReferenceException e) {
+                print("A wave was deleted, but not from WIM's array.");
             }
         }
 
@@ -61,7 +59,6 @@ public class WandConductor : MonoBehaviour
         string[] fullName = other.name.Split('_');
         objType = fullName[0]; 
 
-        //if (objType == "waveHandle" || objType == "amplitudeHandle" || objType == "frequencyHandle" || objType == "waveMesh") {
         if (objType == "waveHandle") {
 
             GameObject wave = other.gameObject;
@@ -84,7 +81,6 @@ public class WandConductor : MonoBehaviour
         string[] fullName = other.name.Split('_');
         objType = fullName[0]; 
 
-        //if (objType == "waveHandle" || objType == "amplitudeHandle" || objType == "frequencyHandle" || objType == "waveMesh") {
         if (objType == "waveHandle") {    
 
             try {

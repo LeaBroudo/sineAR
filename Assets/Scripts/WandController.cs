@@ -55,8 +55,7 @@ public class WandController : MonoBehaviour
         
         //Delete wave
         if (deleting && objType == "waveHandle") {
-            print("about to call deleteThis");
-            other.gameObject.GetComponent<SineController>().deleteThis();
+            deleteWave(other.gameObject);
             return;
         }
         //Do nothing if selection button not pressed
@@ -100,6 +99,18 @@ public class WandController : MonoBehaviour
 
         Release();
         
+    }
+
+    public void deleteWave(GameObject wave) {
+        SineController sineScript = wave.GetComponent<SineController>();
+            
+        //Make sure in correct scene, otherwise there's no WIM wave to even delete
+        if (sineScript.in3DManipulation) {
+            wimScript.CleanUp(sineScript.waveWIM);
+        }
+        
+        print("deleted: "+wave.name);
+        Destroy(wave);
     }
 
     private IEnumerator FollowWand(string objType) {
