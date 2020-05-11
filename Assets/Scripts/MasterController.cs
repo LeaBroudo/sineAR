@@ -246,8 +246,8 @@ public class MasterController : MonoBehaviour
             //Update wand modifier buttons
             modifierWand1.gameObject.SetActive(true);
             modifierWand2.gameObject.SetActive(true);
-            //modifierWand1.GetComponentInChildren<Text>().text = amplWand1? "Affecting \nAmplitude" : "Affecting \nFrequency";
-            //modifierWand2.GetComponentInChildren<Text>().text = amplWand2? "Affecting \nAmplitude" : "Affecting \nFrequency";
+            modifierWand1.GetComponentInChildren<Text>().text = amplWand1? "Affecting \nAmplitude" : "Affecting \nFrequency";
+            modifierWand2.GetComponentInChildren<Text>().text = amplWand2? "Affecting \nAmplitude" : "Affecting \nFrequency";
 
         }
         else {
@@ -258,8 +258,8 @@ public class MasterController : MonoBehaviour
             SetWandRegular(wand2);
 
             //Update wand modifier buttons
-            //modifierWand1.GetComponentInChildren<Text>().text = "To use set \nConductor Mode";
-            //modifierWand2.GetComponentInChildren<Text>().text = "To use set \nConductor Mode";
+            modifierWand1.GetComponentInChildren<Text>().text = "To use set \nConductor Mode";
+            modifierWand2.GetComponentInChildren<Text>().text = "To use set \nConductor Mode";
             modifierWand1.gameObject.SetActive(false);
             modifierWand2.gameObject.SetActive(false);
 
