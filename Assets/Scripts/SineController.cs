@@ -47,8 +47,8 @@ public class SineController : MonoBehaviour
     void Awake()
     {
         //Conversion
-        freqConversion = 3520f / 5f; 
-        amplConversion = 0.5f / 5f;
+        freqConversion = 220f; 
+        amplConversion = 0.05f;
 
         parentWaves = new float[maxParents * 2];
         lineRenderer = mesh.GetComponent<LineRenderer>();
