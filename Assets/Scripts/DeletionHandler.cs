@@ -22,8 +22,8 @@ public class DeletionHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         wandScript1 = wand1.GetComponent<WandController>();
         wandScript2 = wand2.GetComponent<WandController>();
 
-        t = this.GetComponentInChildren<Text>();
-        t.text = "Not Deleting";
+        /*t = this.GetComponentInChildren<Text>();*/
+        /*t.text = "Not Deleting";*/
     }
 
     // Update is called once per frame
@@ -35,14 +35,14 @@ public class DeletionHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     public void OnPointerDown(PointerEventData eventData) {
         wandScript1.ClickDelete();
         wandScript2.ClickDelete();
-        t.text = "Deleting";
+        /*t.text = "Deleting";*/
 
     }
 
     public void OnPointerUp(PointerEventData eventData) {
         wandScript1.ClickDelete();
         wandScript2.ClickDelete();
-        t.text = "Not Deleting";
+        /*t.text = "Not Deleting";*/
     }
 
 }
