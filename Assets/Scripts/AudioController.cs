@@ -101,22 +101,33 @@ public class AudioController : MonoBehaviour
     // Play all active parentWaves audio frequencies
 	void OnAudioFilterRead(float[] data, int channels)
 	{
+		// float start = (float) AudioSettings.dspTime;
 		for (int i = 0; i < data.Length; i += channels) {
 			data[i] = 0;
-
+			// float start = (float) AudioSettings.dspTime;
 			for (int j = 0; j < waveCount; j++) {
+				// float phase = waves[0].phase;
 				waves[j].phase += waves[j].incr;
+				// start += waves[j].freq * 2f * Mathf.PI * freqScale / samplingFrequency;
 				// data[i] += waves[j].amp * Mathf.Sin(timestamp + (i/2 + 1) * waves[j].freq * 2f * Mathf.PI / samplingFrequency );
 				data[i] += waves[j].amp * Mathf.Sin(waves[j].phase);
+
+				if (waves[j].phase > 2f * Mathf.PI) {
+					waves[j].phase -= 2f * Mathf.PI;
+				}
 				// audio += waves[j].amp * Mathf.Sin((float)AudioSettings.dspTime);
 			}
+			
 			data[i] *= ampScale;
 
 			if (channels == 2) {
-				data[i + 1] = data[i]; // mirror audio in two channel headphones for now
+				data[i + 1] = data[i]; // mirror audio in two channel headphones
 			}
 
 		}
+		// for (int j = 1; j  < waveCount; j++){
+		// 	waves[j].phase = waves[0].phase;
+		// }
 	}
 
 	// public void makeSawtooth () {

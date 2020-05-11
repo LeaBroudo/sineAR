@@ -172,7 +172,7 @@ public class MasterController : MonoBehaviour
         //Using the equation under fourier analysis
         int noiseReduce = 6; //The greater this number, the more square the wave
         for (int i=1; i<noiseReduce; i+=2) {            
-            sineScript.addCollidedParent(0.2f * (2*Mathf.PI * (float)i), 1f/(float)i); //the 0.2f is so the mesh looks right
+            sineScript.addCollidedParent((float)i, 1f/(float)i); //the 0.2f is so the mesh looks right
         }
          
         
@@ -189,7 +189,7 @@ public class MasterController : MonoBehaviour
         //Using the x_sawtooth(t) equation 
         int noiseReduce = 4; //The greater this number, the more sawtooth the wave
         for (int i=1; i<noiseReduce; i++) {            
-            sineScript.addCollidedParent(0.3f * (2*Mathf.PI * (float)i), -1f * Mathf.Pow(-1f,i) * (1f/(float)i)); 
+            sineScript.addCollidedParent((float)i, -1f * Mathf.Pow(-1f,i) * (1f/(float)i)); 
             //the 0.3f is so the mesh looks right
             //the extra -1f is to invert the entire wave
         }
@@ -209,7 +209,7 @@ public class MasterController : MonoBehaviour
         int harmonics = 10; //The greater this number, the more triangle the wave
         for (int i=0; i<harmonics-1; i++) {            
             int mode = (2*i)+1;
-            sineScript.addCollidedParent(0.3f * (2*Mathf.PI * mode), Mathf.Pow(-1f,i) * Mathf.Pow(mode, -2)); 
+            sineScript.addCollidedParent(mode, Mathf.Pow(-1f,i) * Mathf.Pow(mode, -2)); 
             //the 0.3f is so the mesh looks right
         }
         
