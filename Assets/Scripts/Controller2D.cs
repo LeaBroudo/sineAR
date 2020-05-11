@@ -64,7 +64,7 @@ public class Controller2D : MonoBehaviour
                 {
                     Vector3 pos = ray.GetPoint(dist) + offSet;
                     /*pos.z = obj.position.z;*/
-                    pos.z = Mathf.Clamp(obj.position.z, -35, -35);
+                    pos.z = Mathf.Clamp(obj.position.z, -50, -50);
 
                     if (obj.name == "amplitudeHandle")
                     {
@@ -79,10 +79,10 @@ public class Controller2D : MonoBehaviour
                             {
                         /*pos.x = obj.position.x;*/
                         /*pos.x = -5;*/
-                        if (pos.y > 5)
-                            pos.y = 5;
-                        if (pos.y < -6)
-                            pos.y = -6;
+                        if (pos.y > 3)
+                            pos.y = 3;
+                        if (pos.y < -2)
+                            pos.y = -2;
                         obj.GetComponent<SineController>().SetPosition(pos);
                     }
                 }
@@ -101,24 +101,28 @@ public class Controller2D : MonoBehaviour
         SineController sineScript = newWave.GetComponent<SineController>();
 
         //Add material and Shader 
-        sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
-        sineScript.setMaterial();
+        /*sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);*/
+        /*sineScript.setMaterial();*/
+
+        //Get AudioController script
+        AudioController audioScript = newWave.GetComponent<AudioController>();
 
         //Set Object active
         newWave.SetActive(true);
     }
     public void SelectTab(Button button)
     {
+        Debug.Log("BUTTON - ALL WAVES PRINTED:" + allWaves.Count);
         Button prevSelected = GameObject.FindWithTag("selected").GetComponent<Button>(); ;
         prevSelected.GetComponent<Image>().sprite = otherButton;
         prevSelected.tag = "buttonTab";
         button.GetComponent<Image>().sprite = selectedButton;
         button.tag = "selected";
-        ResetWave();
+        /*ResetWave();*/
 
         if (button.name == "Amplutude_Button")
         {
-            Debug.Log("ALL WAVES PRINTED:" + allWaves.Count);
+            Debug.Log("BUTTON - Amplitude");
             panelA.SetActive(true);
             panelF.SetActive(false);
             paneladd.SetActive(false);
@@ -129,7 +133,7 @@ public class Controller2D : MonoBehaviour
         }
         else if(button.name == "Frequency_Button")
         {
-            Debug.Log("ALL WAVES PRINTED:" + allWaves.Count);
+            Debug.Log("BUTTON - Frequency");
             panelF.SetActive(true);
             panelA.SetActive(false);
             paneladd.SetActive(false);
@@ -139,16 +143,16 @@ public class Controller2D : MonoBehaviour
         }
         else if(button.name == "ADD_Button")
         {
-            Debug.Log("ALL WAVES PRINTED:" + allWaves.Count);
+            Debug.Log("BUTTON - Add");
             paneladd.SetActive(true);
             panelA.SetActive(false);
             panelF.SetActive(false);
             wave.GetComponent<SphereCollider>().enabled = true;
-            Vector3 pos = new Vector3(wave.transform.position.x, 5, wave.transform.position.z);
+            Vector3 pos = new Vector3(wave.transform.position.x, 3, wave.transform.position.z);
             wave.GetComponent<SineController>().SetPosition(pos);
             aH.SetActive(true);
             fH.SetActive(true);
-            createNewWave(new Vector3(spawnPoint.transform.position.x, -6, spawnPoint.transform.position.z));
+            createNewWave(new Vector3(spawnPoint.transform.position.x, 0, spawnPoint.transform.position.z));
         }
     }
 
@@ -175,11 +179,11 @@ public class Controller2D : MonoBehaviour
             i--;
         }
         wave_reset.GetComponent<SineController>().SetPosition(spawnPoint.transform.position);
-        wave_reset.GetComponent<SineController>().mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
-        wave_reset.GetComponent<SineController>().setMaterial();
+        /*wave_reset.GetComponent<SineController>().mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);*/
+        /*wave_reset.GetComponent<SineController>().setMaterial();*/
         float[] fa = wave_reset.GetComponent<SineController>().getFandA();
-        wave_reset.GetComponent<SineController>().changeFrequency(1f - fa[0]);
-        wave_reset.GetComponent<SineController>().changeAmplitude(1f - fa[1]);
+        wave_reset.GetComponent<SineController>().ChangeFrequency(1f - fa[0]);
+        wave_reset.GetComponent<SineController>().ChangeAmplitude(1f - fa[1]);
         wave = wave_reset;
         Debug.Log("WAVE name is: " + wave.name);
     }

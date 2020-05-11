@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class SineController : MonoBehaviour
 {
@@ -29,66 +30,95 @@ public class SineController : MonoBehaviour
     public int parentCount = 0;
     private string parentString = "_ParentArray";
     
-    private ChildWIM wimScript;
-    public GameObject playerWIM;
+    public GameObject waveWIM;
+    public GameObject WIM;
+    private LineRenderer lineWIM;
+    private GameObject pivotWIM;
 
     public float freqConversion; 
     public float amplConversion; 
+
+    public bool in3DManipulation;
+    
+    private LineRenderer lineRenderer;
     
     void Awake()
     {
         //Conversion
-        freqConversion = 3520f / 5f; 
-        amplConversion = 0.5f / 5f;
+        freqConversion = 220f; 
+        amplConversion = 0.05f;
 
+        parentWaves = new float[maxParents * 2];
+        lineRenderer = mesh.GetComponent<LineRenderer>();
+        
+        //Don't set WIM if not in correct scene
+        if (SceneManager.GetActiveScene().name == "3DManipulation") {
+            //print("In 3DManipulation");
+            in3DManipulation = true;
+        }
+        else {
+            //print("Not In 3DManipulation");
+            in3DManipulation = false;
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        //Compute this wave and WIM wave
+        DrawTravellingSineWave(lineRenderer, meshAmpl, meshFreq, 1f);
+
+        if (in3DManipulation) {
+            DrawTravellingSineWave(lineWIM, meshAmpl, meshFreq, 1f);
+        }
+
     }
 
-    public void setMaterial() {
-        mat = mesh.GetComponent<MeshRenderer>().material; 
-        mat.color = Color.black;
+    public void setChildNames(int num) {
+        //string numString = "WIM_" + num.ToString();
+        string numString = "_" + num.ToString();
+        pivot.name += numString; 
+        mesh.name += numString; 
+        freqHandle.name += numString; 
+        amplHandle.name += numString; 
+    }
 
-        parentWaves = new float[maxParents * 2];
-        mat.SetFloat("_ParentCount", parentCount);
-        mat.SetFloatArray(parentString, parentWaves);
+    public void setWIMNames() {
+        pivot.name = "pivotWIM"; 
+        mesh.name = "waveMeshWIM"; 
     }
 
     public void setWIM() {
         
+        if (!in3DManipulation) {
+            return;
+        }
+        
         //Create WIM Mesh 
-
         //Instantiate(Object original, Transform parent);
-        GameObject meshWIM = Instantiate(this.gameObject, playerWIM.transform);
-        meshWIM.SetActive(true);
-        wimScript = meshWIM.GetComponent<ChildWIM>();
+        waveWIM = Instantiate(this.gameObject, WIM.transform);
+        waveWIM.SetActive(true);
+        
+        //Change name
+        waveWIM.name = "WIMwave_"+this.gameObject.name.Split('_')[1];
 
-        //Delete Handles
-        SineController sineScriptWIM = meshWIM.GetComponent<SineController>();
+        //Delete Handles and Audio 
+        SineController sineScriptWIM = waveWIM.GetComponent<SineController>();
+        sineScriptWIM.setWIMNames();
+        lineWIM = sineScriptWIM.mesh.GetComponent<LineRenderer>();
+        lineWIM.widthMultiplier = lineRenderer.widthMultiplier / 5f;
+        pivotWIM = sineScriptWIM.pivot;
+
         Destroy(sineScriptWIM.freqHandle);
         Destroy(sineScriptWIM.amplHandle);
+        Destroy(waveWIM.GetComponent<AudioController>()); 
+        Destroy(waveWIM.GetComponent<AudioSource>()); 
+        Destroy(waveWIM.GetComponent<SineController>());
         
         //Update Scripts
-        meshWIM.GetComponent<ChildWIM>().enabled = true;
-        meshWIM.GetComponent<SineController>().enabled = false;
-        wimScript.meshParent = this.gameObject;
-        wimScript.meshWIM = meshWIM;
-        wimScript.parentScript = this.gameObject.GetComponent<SineController>();
-
-        //Set position and scale
-        meshWIM.transform.localPosition = wimScript.getParentPosFromCam() / wimScript.conversionFactor;
-        meshWIM.transform.localScale /= wimScript.conversionFactor;
-
-        //Set WIM to start
-        wimScript.fullyInstantiated = true;
-
-
-        //TODO: DELETE AUDIO CONTROLLER 
-
-
+        WIM.GetComponent<ChildWIM>().addWaveChild(waveWIM, this.gameObject);
 
     }
 
@@ -114,13 +144,13 @@ public class SineController : MonoBehaviour
 
     public void changeFrequency(float d) {
         meshFreq += d;
-        mat.SetFloat("_Frequency", meshFreq);
+        //mat.SetFloat("_Frequency", meshFreq);
         checkColor();
     } 
 
     public void changeAmplitude(float d) {
         meshAmpl += d;
-        mat.SetFloat("_Amplitude", meshAmpl);
+        //mat.SetFloat("_Amplitude", meshAmpl);
         checkColor();
     } 
 
@@ -137,12 +167,20 @@ public class SineController : MonoBehaviour
 
         if (isBaseColor && !isBaseWave()) {
             this.GetComponent<MeshRenderer>().material = nonBaseMat;
-            wimScript.meshWIM.GetComponent<MeshRenderer>().material = nonBaseMat;
+
+            if (in3DManipulation) {
+                waveWIM.GetComponent<MeshRenderer>().material = nonBaseMat;
+            }
+
             isBaseColor = false; 
         }
         else if (!isBaseColor && isBaseWave()) {
             this.GetComponent<MeshRenderer>().material = baseMat;
-            wimScript.meshWIM.GetComponent<MeshRenderer>().material = baseMat;
+
+            if (in3DManipulation) {
+                waveWIM.GetComponent<MeshRenderer>().material = baseMat;
+            }
+            
             isBaseColor = true; 
         }
 
@@ -157,8 +195,8 @@ public class SineController : MonoBehaviour
             parentWaves[parentCount++] = pAmpl;
             
             //Update shader
-            mat.SetFloatArray(parentString, parentWaves);
-            mat.SetFloat("_ParentCount", parentCount);
+            //mat.SetFloatArray(parentString, parentWaves);
+            //mat.SetFloat("_ParentCount", parentCount);
         }
         
     }
@@ -171,18 +209,15 @@ public class SineController : MonoBehaviour
     public float[] getCollidedParents() {
         return parentWaves;
     }
-
+    
     private void OnTriggerEnter(Collider other) {
-        //print(this.name+" collided: "+other.name);
+        print(this.name+" collided: "+other.name);
         
-        //If currently editing position, do nothing
-        //if (!editingPos && other.name == "pivot") {
-        if (other.name == "pivot") {
+        if (other.name.Split('_')[0] == "pivot") {
             GameObject otherWave = other.gameObject.transform.parent.gameObject; 
             SineController otherScript = otherWave.GetComponent<SineController>();
 
             //Only combine if both are basewaves and other wave not editing position
-            //if (!otherScript.editingPos && isBaseWave() && otherScript.isBaseWave()) {
             if (isBaseWave() && otherScript.isBaseWave()) {
 
                 //Move own freq and amplitude to parent's array
@@ -209,7 +244,11 @@ public class SineController : MonoBehaviour
 
                 //Destroy the other wave and its WIM child
                 string name = otherWave.name; 
-                Destroy(otherScript.wimScript.meshWIM);
+
+                if (in3DManipulation) {
+                    WIM.GetComponent<ChildWIM>().CleanUp(otherScript.waveWIM);
+                }
+    
                 Destroy(otherWave);
                 print("deleted: "+ name);
 
@@ -217,13 +256,6 @@ public class SineController : MonoBehaviour
                 freqHandle.GetComponent<FrequencyController>().ResetPosition();
                 amplHandle.GetComponent<AmplitudeController>().ResetPosition();
 
-                /* 
-                for (int i=0; i < parentCount;) {
-
-                    print("pf: "+parentWaves[i++]+" pa: " +parentWaves[i++]);
-                }
-                print("f: "+meshFreq+" a: "+meshAmpl);
-                */
             }
         }
     }
@@ -232,25 +264,59 @@ public class SineController : MonoBehaviour
         this.transform.position = pos; 
     }
 
-    /* 
-    public float computeWaveAtPoint(float x) {
-
-        //return: ampl * ((pAmpl1 * sin(freq * pFreq1*x)) + (pAmpl2 * sin(freq * pFreq2*x)) + ...)
-        
-        float final = 0; 
-        float pFreq, pAmpl;
-        
-        for (int i=0; i < parentWaves.Length; ) {
-            
-            pFreq = parentWaves[i++]; 
-            pAmpl = parentWaves[i++]; 
-            
-            final += pAmpl * Mathf.Sin(meshFreq * pFreq * x);
-        }
-        final *= meshAmpl;
-
-        return final;
-
+    public void ChangeFrequency(float f) {
+        Vector3 pos = freqHandle.transform.position + new Vector3(f,0,0);
+        freqHandle.GetComponent<FrequencyController>().SetPosition(pos);
     }
-    */
+
+    public void ChangeAmplitude(float a) {
+        Vector3 pos = amplHandle.transform.position + new Vector3(0,a,0);
+        amplHandle.GetComponent<AmplitudeController>().SetPosition(pos);
+    }
+
+    void DrawTravellingSineWave(LineRenderer line, float amplitude, float frequency, float waveSpeed){
+
+        //ampl * ((pAmpl1 * sin(freq * pFreq1*x)) + (pAmpl2 * sin(freq * pFreq2*x)) + ...)
+        float conversion = 5f;
+        float x = 0f;
+        float y;
+        float wavelength = conversion/frequency;
+        float k = 2 * Mathf.PI / wavelength;
+        line.positionCount = 110;
+        
+        float travel;
+        
+        if (parentCount == 0) {
+            travel = k * waveSpeed * Time.time;
+
+            for (int i = 0; i < line.positionCount; i++){
+                x += i * 0.001f;
+                y = amplitude * Mathf.Sin(k * x + travel);
+                line.SetPosition(i, new Vector3(x, y, 0));
+            }
+        }
+        
+        else {
+            
+            for (int i = 0; i < line.positionCount; i++){
+                x += i * 0.001f;
+                y = 0;
+                for (int j=0; j < parentWaves.Length; ) {
+            
+                    float pFreq = parentWaves[j++]; 
+                    float pAmpl = parentWaves[j++]; 
+                    float pk = (2 * Mathf.PI * pFreq) / conversion;
+                    
+                    travel = pk * waveSpeed * Time.time;
+                    //y += pAmpl * Mathf.Sin(k * (pk * x) + travel);
+                    y += pAmpl * Mathf.Sin(k * (pk * x + travel));
+                }
+                y *= amplitude;
+                
+                line.SetPosition(i, new Vector3(x, y, 0));
+            }
+        }
+        
+        
+    }
 }

@@ -111,7 +111,7 @@ public class LearnController: MonoBehaviour
 
         //Add material and Shader 
         sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
-        sineScript.setMaterial();
+        /*sineScript.setMaterial();*/
 
         //Add WIM Child
         /*sineScript.setWIM();*/
@@ -146,7 +146,7 @@ public class LearnController: MonoBehaviour
 
         //Add material and Shader 
         sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
-        sineScript.setMaterial();
+        /*sineScript.setMaterial();*/
 
         //Add WIM Child
         /*sineScript.setWIM();*/
@@ -182,7 +182,7 @@ public class LearnController: MonoBehaviour
 
         //Add material and Shader 
         sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
-        sineScript.setMaterial();
+        /*sineScript.setMaterial();*/
 
         //Add WIM Child
         /*sineScript.setWIM();*/
@@ -220,7 +220,7 @@ public class LearnController: MonoBehaviour
 
         //Add material and Shader 
         sineScript.mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
-        sineScript.setMaterial();
+        /*sineScript.setMaterial();*/
 
         //Add WIM Child
         /*sineScript.setWIM();*/

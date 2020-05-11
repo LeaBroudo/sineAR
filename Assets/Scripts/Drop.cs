@@ -19,23 +19,23 @@ public class Drop : MonoBehaviour, IDropHandler
             GameObject wave = GameObject.FindWithTag("dragged");
             if (wave.name == "Sine")
             {
-                overviewCamera.GetComponent<LearnController>().createNewWave();
+                overviewCamera.GetComponent<MasterController>().createSineWave();
                 wave.tag = "Untagged";
             }
             if (wave.name == "Sawtooth")
             {
-                overviewCamera.GetComponent<LearnController>().createSawWave();
+                overviewCamera.GetComponent<MasterController>().createSawWave();
                 wave.tag = "Untagged";
             }
             if (wave.name == "Square")
             {
-                overviewCamera.GetComponent<LearnController>().createSquareWave();
+                overviewCamera.GetComponent<MasterController>().createSquareWave();
                 wave.tag = "Untagged";
             }
             if (wave.name == "Triangle")
             {
                 Debug.Log("TRIANGLE!!!");
-                overviewCamera.GetComponent<LearnController>().createTriWave();
+                overviewCamera.GetComponent<MasterController>().createTriWave();
                 wave.tag = "Untagged";
             }
         }

@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FrequencyController : MonoBehaviour
 {
     public GameObject waveHandle; 
+    public GameObject Fnum;
     
     private SineController sineScript;
     private float lastX;
@@ -20,6 +22,8 @@ public class FrequencyController : MonoBehaviour
         lastX = this.transform.localPosition.x; 
 
         origin = this.transform.localPosition;
+
+        SetText();
     }
 
     // Update is called once per frame
@@ -33,7 +37,6 @@ public class FrequencyController : MonoBehaviour
         Vector3 localPos = waveHandle.transform.InverseTransformPoint(pos); 
         
         if (localPos.x < minFreq || localPos.x > maxFreq) return; 
-        //print("local: "+localPos);
 
         float y = this.transform.localPosition.y; 
         float z = this.transform.localPosition.z; 
@@ -42,12 +45,18 @@ public class FrequencyController : MonoBehaviour
         sineScript.changeFrequency(2f*(lastX-localPos.x));
         lastX = localPos.x; 
 
-        //print("Audio freq: "+sineScript.getFrequency());
+        SetText();
     }
 
     public void ResetPosition() {
         this.transform.localPosition = origin; 
         lastX = origin.x;
+        SetText();
+    }
+
+    public void SetText() {
+        float num = Mathf.Round(sineScript.getFrequency() * 100) / 100f;
+        Fnum.GetComponent<TextMesh>().text = num.ToString();
     }
 
 }
