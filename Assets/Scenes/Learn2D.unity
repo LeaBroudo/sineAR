@@ -421,7 +421,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.8996277, y: 21.399994}
+  m_AnchoredPosition: {x: 1.7660062, y: 214.62306}
   m_SizeDelta: {x: 357.8, y: 150.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &107651838
@@ -442,13 +442,20 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Adding waves ...
-
-
-    Adjus the Amplitude and Frequency of each wave
+  m_text: "Adding waves together can result in new notes and harmonics. A pure sine
+    wave has the following equation:\r\n\r\nEq. 1: \ty(t) = amplitude * sin(frequency
+    * t) \r\n\r\nHowever, when waves are added together, a separate equation is necessary.
+    Let\u2019s say that n separate waves are added together, each with their own
+    amplitude and frequency, pAmpi and pFreqi. The resulting wave from all the other
+    waves added together is then given its own amplitude and frequency, amplitude
+    a and frequency f. This gives us the following equation:\r\n\r\nEq. 2: \ty(t)
+    = a * [(pAmp1* sin(f * (pFreq1*t))) + ... + (pAmpn* sin(f * (pFreqn*t)))]\r\n\r\n\tYou
+    could then theoretically add together any number of waves to create any number
+    of sounds ranging in pitch and tonal quality. \r\n\r\nFor now let\u2019s try
+    adding just two waves together. Adjust the Amplitude and Frequency of each wave
     and when you are ready, drag the top wave using the blue circular handle to combine
     with the bottom wave and hear the results of adding two sound waves together
-    !!!'
+    !!!\r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -493,7 +500,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 211
+  m_firstOverflowCharacterIndex: 159
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -517,12 +524,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 107651838}
-    characterCount: 229
+    characterCount: 1011
     spriteCount: 0
-    spaceCount: 42
-    wordCount: 40
+    spaceCount: 182
+    wordCount: 169
     linkCount: 0
-    lineCount: 8
+    lineCount: 34
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -1136,8 +1143,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.735, y: -113.6}
-  m_SizeDelta: {x: 435.67, y: 527.7}
+  m_AnchoredPosition: {x: 1.735, y: -315}
+  m_SizeDelta: {x: 435.7, y: 930.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &340260491
 GameObject:
@@ -2825,7 +2832,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.13365173, y: 198.77692}
+  m_AnchoredPosition: {x: -0, y: 392}
   m_SizeDelta: {x: 197.6, y: 105.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &988362325
@@ -3712,7 +3719,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00030517578, y: 120.19998}
+  m_AnchoredPosition: {x: -0.13392663, y: 313.42303}
   m_SizeDelta: {x: 435.9, y: 43.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1174810161
@@ -3914,8 +3921,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1867564341}
   m_HandleRect: {fileID: 1867564340}
   m_Direction: 2
-  m_Value: 0.9999999
-  m_Size: 0.56945235
+  m_Value: 1.0000001
+  m_Size: 0.32294467
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5458,8 +5465,8 @@ RectTransform:
   m_Father: {fileID: 1249716144}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.4305476}
-  m_AnchorMax: {x: 1, y: 0.99999994}
+  m_AnchorMin: {x: 0, y: 0.67705536}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
