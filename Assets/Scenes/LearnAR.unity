@@ -761,6 +761,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94fdb759675f283479336d06fddae88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Select: {fileID: 649549726}
+  ChangeMode: {fileID: 1639605295}
+  delete: {fileID: 592203373}
+  Panel: {fileID: 568729379}
 --- !u!1 &126562515
 GameObject:
   m_ObjectHideFlags: 0
@@ -2292,6 +2296,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94fdb759675f283479336d06fddae88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Select: {fileID: 649549726}
+  ChangeMode: {fileID: 1639605295}
+  delete: {fileID: 592203373}
+  Panel: {fileID: 568729379}
 --- !u!1 &458230429
 GameObject:
   m_ObjectHideFlags: 0
@@ -2792,6 +2800,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94fdb759675f283479336d06fddae88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Select: {fileID: 649549726}
+  ChangeMode: {fileID: 1639605295}
+  delete: {fileID: 592203373}
+  Panel: {fileID: 568729379}
 --- !u!1 &471273333
 GameObject:
   m_ObjectHideFlags: 0
@@ -3159,7 +3171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &568729380
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3251,7 +3263,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &592203374
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3784,7 +3796,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &649549727
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4153,6 +4165,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94fdb759675f283479336d06fddae88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Select: {fileID: 649549726}
+  ChangeMode: {fileID: 1639605295}
+  delete: {fileID: 592203373}
+  Panel: {fileID: 568729379}
 --- !u!43 &786639463
 Mesh:
   m_ObjectHideFlags: 0
@@ -4374,8 +4390,8 @@ MonoBehaviour:
   m_text: "Before you can add a new wave to your environment, make sure to have the
     lego image target in the camera view. You will also want handy either the autumn
     or vortex image target which will serve as wands for manipulating the wave. \r\n\n***Please
-    note that to get the full special audio experience you must use headphones/earbuds
-    :)\r"
+    note that to get the full spatial audio experience, you must use headphones\nor
+    earbuds :)\r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4444,10 +4460,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 805851426}
-    characterCount: 329
+    characterCount: 333
     spriteCount: 0
-    spaceCount: 59
-    wordCount: 58
+    spaceCount: 61
+    wordCount: 59
     linkCount: 0
     lineCount: 13
     pageCount: 1
@@ -4901,6 +4917,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94fdb759675f283479336d06fddae88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Select: {fileID: 649549726}
+  ChangeMode: {fileID: 1639605295}
+  delete: {fileID: 592203373}
+  Panel: {fileID: 568729379}
 --- !u!1 &902987232
 GameObject:
   m_ObjectHideFlags: 0
@@ -8036,6 +8056,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94fdb759675f283479336d06fddae88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Select: {fileID: 649549726}
+  ChangeMode: {fileID: 1639605295}
+  delete: {fileID: 592203373}
+  Panel: {fileID: 568729379}
 --- !u!1 &1639605295
 GameObject:
   m_ObjectHideFlags: 0
@@ -8054,7 +8078,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1639605296
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9077,6 +9101,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94fdb759675f283479336d06fddae88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Select: {fileID: 649549726}
+  ChangeMode: {fileID: 1639605295}
+  delete: {fileID: 592203373}
+  Panel: {fileID: 568729379}
 --- !u!1 &1866350974
 GameObject:
   m_ObjectHideFlags: 0
