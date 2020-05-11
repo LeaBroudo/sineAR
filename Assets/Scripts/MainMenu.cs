@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void Play(){ SceneManager.LoadScene("SampleScene"); }
+    public void Play(){ SceneManager.LoadScene("3DManipulation"); }
  
     public void Learn(){ SceneManager.LoadScene("LearnMenu"); }
 

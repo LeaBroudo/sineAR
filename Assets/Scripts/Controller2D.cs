@@ -25,15 +25,13 @@ public class Controller2D : MonoBehaviour
     private GameObject aH;
     private GameObject fH;
     private GameObject wave;
-    public GameObject addButton;
 
     // Start is called before the first frame update
     void Start()
     {
         wavePrefab.SetActive(false);
-        addButton.SetActive(false);
         allWaves = new List<GameObject>();
-        createNewWave();
+        createNewWave(spawnPoint.transform.position);
         aH = GameObject.FindWithTag("amplitudeHandle");
         fH = GameObject.FindWithTag("frequencyHandle");
         wave = GameObject.FindWithTag("wave");
@@ -48,18 +46,15 @@ public class Controller2D : MonoBehaviour
         //MOVE THE HANDLES USING TOUCH INPUT AND RAYCASTING
         if (Input.touchCount > 0)
         {
-            /*Debug.Log("a touch has been registered");*/
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
             {
                 if (EventSystem.current.IsPointerOverGameObject())
                     return;
-                /*Debug.Log("touch phase is stationary or moved");*/
                 RaycastHit hit;
                 Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.GetTouch(0).position);
-                if (Physics.Raycast(ray, out /*distance*/hit))
+                if (Physics.Raycast(ray, out hit))
                 {
-                    /*Debug.Log("a hit was made");*/
                     obj = hit.transform;
                     offSet = obj.position - hit.point;
                     dist = (ray.origin - hit.point).magnitude;    
@@ -68,23 +63,22 @@ public class Controller2D : MonoBehaviour
                 if (obj)
                 {
                     Vector3 pos = ray.GetPoint(dist) + offSet;
-                    pos.z = obj.position.z;
+                    /*pos.z = obj.position.z;*/
+                    pos.z = Mathf.Clamp(obj.position.z, -35, -35);
 
                     if (obj.name == "amplitudeHandle")
                     {
-                        /*Debug.Log("AMPLITUDE _______________________HANDLE");*/
                         obj.GetComponent<AmplitudeController>().SetPosition(pos);
                     }
                     else if (obj.name == "frequencyHandle")
                     {
-                        /*Debug.Log("FREQUENCY _______________________HANDLE");*/
                         obj.GetComponent<FrequencyController>().SetPosition(pos);
                     }
-                    else if (obj.name.Split('_')[0] == "waveHandle")
-                    /*else if (obj.name == "waveHandle_1")*/
-                    {
-                        /*Debug.Log("WAVEHANDLE _______________________HANDLE");*/
+                    /*else if (obj.name.Split('_')[0] == "waveHandle")*/
+                    else if (obj.name == "waveHandle_1")
+                            {
                         /*pos.x = obj.position.x;*/
+                        /*pos.x = -5;*/
                         if (pos.y > 5)
                             pos.y = 5;
                         if (pos.y < -6)
@@ -95,11 +89,10 @@ public class Controller2D : MonoBehaviour
             }
         }
     }
-    public void createNewWave()
+    public void createNewWave(Vector3 spawnPos)
     {
 
         //Instantiate prefab
-        Vector3 spawnPos = spawnPoint.transform.position;
         GameObject newWave = Instantiate(wavePrefab, spawnPos, Quaternion.identity);
         allWaves.Add(newWave);
         newWave.name = "waveHandle_" + allWaves.Count;
@@ -121,21 +114,22 @@ public class Controller2D : MonoBehaviour
         prevSelected.tag = "buttonTab";
         button.GetComponent<Image>().sprite = selectedButton;
         button.tag = "selected";
-        /*GameObject wave = GameObject.FindWithTag("wave");*/
+        ResetWave();
 
         if (button.name == "Amplutude_Button")
         {
+            Debug.Log("ALL WAVES PRINTED:" + allWaves.Count);
             panelA.SetActive(true);
             panelF.SetActive(false);
             paneladd.SetActive(false);
             aH.SetActive(true);
             fH.SetActive(false);
-            /*GameObject wave = GameObject.FindWithTag("wave");*/
             wave.GetComponent<SphereCollider>().enabled = false;
 
         }
         else if(button.name == "Frequency_Button")
         {
+            Debug.Log("ALL WAVES PRINTED:" + allWaves.Count);
             panelF.SetActive(true);
             panelA.SetActive(false);
             paneladd.SetActive(false);
@@ -145,22 +139,48 @@ public class Controller2D : MonoBehaviour
         }
         else if(button.name == "ADD_Button")
         {
-            addButton.SetActive(true);
+            Debug.Log("ALL WAVES PRINTED:" + allWaves.Count);
             paneladd.SetActive(true);
             panelA.SetActive(false);
             panelF.SetActive(false);
-            /*GameObject wave = GameObject.FindWithTag("wave");*/
             wave.GetComponent<SphereCollider>().enabled = true;
             Vector3 pos = new Vector3(wave.transform.position.x, 5, wave.transform.position.z);
             wave.GetComponent<SineController>().SetPosition(pos);
             aH.SetActive(true);
             fH.SetActive(true);
+            createNewWave(new Vector3(spawnPoint.transform.position.x, -6, spawnPoint.transform.position.z));
         }
     }
 
-    public void AddWave(/*GameObject addButton*/)
+    public void ResetWave()
     {
-        createNewWave();
-        addButton.SetActive(false);
+        GameObject wave_reset = allWaves[0];
+        Debug.Log("wave_reset name is: " + wave_reset.name);
+        int i = allWaves.Count - 1;
+        while (i >= 0)
+        {
+            if (wave_reset == null)
+            {
+                wave_reset = allWaves[i - 1];
+                allWaves.RemoveAt(i);
+            }
+
+            else if (wave_reset != null && wave_reset != allWaves[i])
+            {
+                if(allWaves[i] != null)
+                    Object.Destroy(allWaves[i]);
+                allWaves.RemoveAt(i);
+            }
+
+            i--;
+        }
+        wave_reset.GetComponent<SineController>().SetPosition(spawnPoint.transform.position);
+        wave_reset.GetComponent<SineController>().mesh.GetComponent<MeshRenderer>().material = new Material(waveShader);
+        wave_reset.GetComponent<SineController>().setMaterial();
+        float[] fa = wave_reset.GetComponent<SineController>().getFandA();
+        wave_reset.GetComponent<SineController>().changeFrequency(1f - fa[0]);
+        wave_reset.GetComponent<SineController>().changeAmplitude(1f - fa[1]);
+        wave = wave_reset;
+        Debug.Log("WAVE name is: " + wave.name);
     }
 }
