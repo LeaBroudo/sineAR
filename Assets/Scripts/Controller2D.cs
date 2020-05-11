@@ -25,13 +25,19 @@ public class Controller2D : MonoBehaviour
     private GameObject aH;
     private GameObject fH;
     private GameObject wave;
+    Vector3 spawnPosCam = new Vector3(.06f, .5f, 12.0f);
 
     // Start is called before the first frame update
     void Start()
     {
+        /*float x = Random.Range(0.50f, 0.0f);
+        float y = Random.Range(0.50f, 0.0f);
+        Vector3 pos = new Vector3(x, y, 10.0f);*/
+        /*Vector3 pos = new Vector3(.01f, .5f, 10.0f);*/
+        spawnPosCam = Camera.main.ViewportToWorldPoint(spawnPosCam);
         wavePrefab.SetActive(false);
         allWaves = new List<GameObject>();
-        createNewWave(spawnPoint.transform.position);
+        createNewWave(/*spawnPoint.transform.position*/spawnPosCam);
         aH = GameObject.FindWithTag("amplitudeHandle");
         fH = GameObject.FindWithTag("frequencyHandle");
         wave = GameObject.FindWithTag("wave");
@@ -63,8 +69,8 @@ public class Controller2D : MonoBehaviour
                 if (obj)
                 {
                     Vector3 pos = ray.GetPoint(dist) + offSet;
-                    /*pos.z = obj.position.z;*/
-                    pos.z = Mathf.Clamp(obj.position.z, -50, -50);
+                    pos.z = obj.position.z;
+                    /*pos.z = Mathf.Clamp(obj.position.z, -50, -50);*/
 
                     if (obj.name == "amplitudeHandle")
                     {
@@ -152,7 +158,8 @@ public class Controller2D : MonoBehaviour
             wave.GetComponent<SineController>().SetPosition(pos);
             aH.SetActive(true);
             fH.SetActive(true);
-            createNewWave(new Vector3(spawnPoint.transform.position.x, 0, spawnPoint.transform.position.z));
+            /*createNewWave(new Vector3(spawnPoint.transform.position.x, 0, spawnPoint.transform.position.z));*/
+            createNewWave(spawnPosCam);
         }
     }
 
