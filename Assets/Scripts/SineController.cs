@@ -41,6 +41,8 @@ public class SineController : MonoBehaviour
     public bool in3DManipulation;
     
     private LineRenderer lineRenderer;
+
+    private GameObject camera;
     
     void Awake()
     {
@@ -60,6 +62,9 @@ public class SineController : MonoBehaviour
             //print("Not In 3DManipulation");
             in3DManipulation = false;
         }
+
+        camera = GameObject.Find("ARCamera");
+
         
     }
 
@@ -73,6 +78,7 @@ public class SineController : MonoBehaviour
         if (in3DManipulation) {
             DrawTravellingSineWave(lineWIM, meshAmpl, meshFreq, 1f);
         }
+        // transform.LookAt(camera.transform.position, Vector3.up); // this one is flipped horizontally...
 
     }
 

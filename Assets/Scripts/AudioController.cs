@@ -16,9 +16,14 @@ public class AudioController : MonoBehaviour
     private float freqConversion = 220f;
     private float amplConversion = 0.05f;
 
-    public float freqScale = 1;
-    public float ampScale = 1;
+    public float freqScale = 1f;
+    public float ampScale = 1f;
 	public Wave [] waves;
+
+	private GameObject camera;
+	private float leftScale = 0f;
+	private float rightScale = 0f;
+	private float minScale = 0.1f;
 
     public struct Wave
 	{
@@ -51,6 +56,8 @@ public class AudioController : MonoBehaviour
 		waves[0] = new Wave(sineScript.getFrequency(), 
 							sineScript.getAmplitude());
 		waveCount = 1;
+
+		camera = GameObject.Find("ARCamera");
 
 		setEnabled(true);
 	}
@@ -95,6 +102,45 @@ public class AudioController : MonoBehaviour
 			waves[w].updateIncr(waves[w].freq, freqScale);
 			print("Wave: "+w+" Freq: " + waves[w].freq*freqScale + " Amp: " + waves[w].amp*ampScale);
 		}
+
+		Vector3 fromWave = new Vector3(this.transform.position.x, camera.transform.position.y, this.transform.position.z);
+		float angle = Vector3.SignedAngle(fromWave - camera.transform.position, camera.transform.forward, camera.transform.up);
+		print("angle: " + angle);
+		if (Mathf.Abs(angle) < 90f) { // In front
+			if (angle > 0f) { // In front to left
+				leftScale = 1f;
+				rightScale = Mathf.Clamp((90f - Mathf.Abs(angle)) / 90f, 0.1f, 1f);
+			} else { 		 // In front to the right
+				leftScale = Mathf.Clamp((90f - Mathf.Abs(angle)) / 90f, 0.1f, 1f);
+				rightScale = 1f;
+			}
+		} else { // Behind
+			if (angle > 0f) { // Behind to the left
+				leftScale = Mathf.Clamp((180f - Mathf.Abs(angle)) / 90f, 0.25f, 1f);
+				rightScale = Mathf.Clamp(Mathf.Abs((90f - Mathf.Abs(angle)) / 90f), 0.1f, 0.25f); 
+			} else {		  // Behind to the right
+				rightScale = Mathf.Clamp((180f - Mathf.Abs(angle)) / 90f, 0.25f, 1f);
+				leftScale = Mathf.Clamp(Mathf.Abs((90f - Mathf.Abs(angle)) / 90f), 0.1f, 0.25f); 
+			}
+		}
+
+		// 	leftScale = 1f;
+		// 	rightScale = 1f;
+		// 	print("forward with left, right" + leftScale + rightScale);
+		// } else if (angle > 25f) { // Wave is to the left
+		// 	leftScale = Mathf.Clamp(angle % 90f / 90f, 0.75f, 1f);
+		// 	rightScale = Mathf.Clamp(angle % 90f / 180f, 0.1f, .5f);
+		// 	print("left with left, right" + leftScale + rightScale);
+		// }
+		// else { // Wave is to the right
+		// 	rightScale = Mathf.Clamp(Mathf.Abs(angle) % 90f / 90f, 0.75f, 1f);
+		// 	leftScale = Mathf.Clamp(Mathf.Abs(angle) % 90f / 180f, 0.1f, .5f);
+			print("left: " + leftScale + " right: " + rightScale);
+		// }
+		// print(angle);
+
+		// leftScale = Mathf.Clamp(leftScale, minScale, 1f);
+		// rightScale = Mathf.Clamp(rightScale, minScale, 1f);
 	}
 
 
@@ -118,10 +164,10 @@ public class AudioController : MonoBehaviour
 				// audio += waves[j].amp * Mathf.Sin((float)AudioSettings.dspTime);
 			}
 			
-			data[i] *= ampScale;
+			data[i] *= ampScale * leftScale;
 
 			if (channels == 2) {
-				data[i + 1] = data[i]; // mirror audio in two channel headphones
+				data[i + 1] = data[i] * rightScale; // mirror audio in two channel headphones
 			}
 
 		}
