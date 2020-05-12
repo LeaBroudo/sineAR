@@ -108,7 +108,7 @@ public class AudioController : MonoBehaviour
 
 	// Updates to scaling values from user manipulation
 	void LateUpdate() {
-		float amplitudeIncrement = 0.003f; // 0.005 more responsive but crackles
+		float amplitudeIncrement = 0.01f; // for base wave 0.003-0.005 for less pop
 
 		// if single wave, use sineScript's conversions
 		if (waveCount == 1) {
@@ -123,7 +123,7 @@ public class AudioController : MonoBehaviour
 		else if (freqScale != sineScript.getFrequency() / freqConversion ||
 				 ampScale != sineScript.getAmplitude() / amplConversion) {
 			
-			amplitudeIncrement = 0.05f;
+			amplitudeIncrement = 0.1f; // for multi-wave
 			freqScale = sineScript.getFrequency() / freqConversion;
 			ampScale = Mathf.Clamp(sineScript.getAmplitude() / amplConversion, 
 								   ampScale - amplitudeIncrement,
