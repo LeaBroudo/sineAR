@@ -97,20 +97,31 @@ public class AudioController : MonoBehaviour
 				waveCount++;
 			}
 		}
+	}
+
+	void LateUpdate() {
+		float amplitudeIncrement = 0.003f;
 
 		// if single wave, use sineScript's conversions
 		if (waveCount == 1) {
 			waves[0].freq = sineScript.getFrequency();
-			waves[0].amp  = sineScript.getAmplitude();
+			waves[0].amp  = Mathf.Clamp(sineScript.getAmplitude(),
+										waves[0].amp - amplitudeIncrement,
+										waves[0].amp + amplitudeIncrement);
 			waves[0].incr = waves[0].freq * 2f * Mathf.PI / samplingFrequency;
 		} 
 
 		// else we have multiple waves, use parent wave as scale factor
 		// CAN ALSO JUST QUERY MESH FREQ...
+
 		else if (freqScale != sineScript.getFrequency() / freqConversion 
 				   || ampScale != sineScript.getAmplitude() / amplConversion) {
-			freqScale = sineScript.getFrequency() / freqConversion ;
-			ampScale = sineScript.getAmplitude() / ( amplConversion);
+			amplitudeIncrement = 0.05f;
+			freqScale = sineScript.getFrequency() / freqConversion;
+			ampScale = Mathf.Clamp(sineScript.getAmplitude() / amplConversion, 
+								   ampScale - amplitudeIncrement,
+								   ampScale + amplitudeIncrement);
+			// print("ampScale: " + ampScale);
 			for(int w = 0; w < waveCount; w++){
 				waves[w].updateIncr(waves[w].freq, freqScale);
 			}
@@ -121,10 +132,12 @@ public class AudioController : MonoBehaviour
 			print("Wave: "+w+" Freq: " + waves[w].freq*freqScale + " Amp: " + waves[w].amp*ampScale);
 		}
 
+
+
 		if (!inLearn2D && camera != null){
 			Vector3 fromWave = new Vector3(this.transform.position.x, camera.transform.position.y, this.transform.position.z);
 			float angle = Vector3.SignedAngle(fromWave - camera.transform.position, camera.transform.forward, camera.transform.up);
-			print("angle: " + angle);
+			// print("angle: " + angle);
 			if (Mathf.Abs(angle) < 90f) { // In front
 				if (angle > 0f) { // In front to left
 					leftScale = 1f;
@@ -143,7 +156,7 @@ public class AudioController : MonoBehaviour
 				}
 			}
 		}
-		print("left: " + leftScale + " right: " + rightScale);
+		// print("left: " + leftScale + " right: " + rightScale);
 	}
 
 
@@ -153,23 +166,22 @@ public class AudioController : MonoBehaviour
 		// float start = (float) AudioSettings.dspTime;
 		if (audioEnabled){
 			for (int i = 0; i < data.Length; i += channels) {
-				data[i] = 0;
+				data[i] = 0.00000001f;
 				// float start = (float) AudioSettings.dspTime;
 				for (int j = 0; j < waveCount; j++) {
 					// float phase = waves[0].phase;
 					waves[j].phase += waves[j].incr;
 					// start += waves[j].freq * 2f * Mathf.PI * freqScale / samplingFrequency;
 					// data[i] += waves[j].amp * Mathf.Sin(timestamp + (i/2 + 1) * waves[j].freq * 2f * Mathf.PI / samplingFrequency );
-					data[i] += waves[j].amp * Mathf.Sin(waves[j].phase);
+					data[i] += ampScale * waves[j].amp * Mathf.Sin(waves[j].phase);
 
 					if (waves[j].phase > 2f * Mathf.PI) {
 						waves[j].phase -= 2f * Mathf.PI;
 					}
 					// audio += waves[j].amp * Mathf.Sin((float)AudioSettings.dspTime);
 				}
-				
-				data[i] *= ampScale * leftScale;
-
+				// data[i] *= ampScale;
+				data[i] *= leftScale;
 				if (channels == 2) {
 					data[i + 1] = data[i] / leftScale * rightScale; // mirror audio in two channel headphones
 				}

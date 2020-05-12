@@ -64,8 +64,6 @@ public class SineController : MonoBehaviour
         }
 
         camera = GameObject.Find("ARCamera");
-
-        
     }
 
     // Update is called once per frame
@@ -78,7 +76,11 @@ public class SineController : MonoBehaviour
         if (in3DManipulation) {
             DrawTravellingSineWave(lineWIM, meshAmpl, meshFreq, 1f);
         }
-        // transform.LookAt(camera.transform.position, Vector3.up); // this one is flipped horizontally...
+        
+        if (camera != null) {
+            transform.LookAt(transform.position + camera.transform.forward);
+        }
+
 
     }
 
