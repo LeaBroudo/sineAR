@@ -77,6 +77,7 @@ public class SineController : MonoBehaviour
             DrawTravellingSineWave(lineWIM, meshAmpl, meshFreq, 1f);
         }
         
+        //Rotate towards the AR Camera if it exists
         if (camera != null) {
             transform.LookAt(transform.position + camera.transform.forward);
         }
