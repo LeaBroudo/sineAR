@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine.Audio;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 [RequireComponent(typeof(AudioSource))]
 public class AudioController : MonoBehaviour
@@ -24,6 +26,8 @@ public class AudioController : MonoBehaviour
 	private float leftScale = 0f;
 	private float rightScale = 0f;
 	private float minScale = 0.1f;
+
+	private bool inLearn2D = false;
 
     public struct Wave
 	{
@@ -58,6 +62,14 @@ public class AudioController : MonoBehaviour
 		waveCount = 1;
 
 		camera = GameObject.Find("ARCamera");
+
+	    if (SceneManager.GetActiveScene().name == "Learn2D") {
+            inLearn2D = true;
+            leftScale = 1f;
+            rightScale = 1f;
+        } else {
+            inLearn2D = false;
+        }
 
 		setEnabled(true);
 	}
@@ -103,44 +115,29 @@ public class AudioController : MonoBehaviour
 			print("Wave: "+w+" Freq: " + waves[w].freq*freqScale + " Amp: " + waves[w].amp*ampScale);
 		}
 
-		Vector3 fromWave = new Vector3(this.transform.position.x, camera.transform.position.y, this.transform.position.z);
-		float angle = Vector3.SignedAngle(fromWave - camera.transform.position, camera.transform.forward, camera.transform.up);
-		print("angle: " + angle);
-		if (Mathf.Abs(angle) < 90f) { // In front
-			if (angle > 0f) { // In front to left
-				leftScale = 1f;
-				rightScale = Mathf.Clamp((90f - Mathf.Abs(angle)) / 90f, 0.1f, 1f);
-			} else { 		 // In front to the right
-				leftScale = Mathf.Clamp((90f - Mathf.Abs(angle)) / 90f, 0.1f, 1f);
-				rightScale = 1f;
-			}
-		} else { // Behind
-			if (angle > 0f) { // Behind to the left
-				leftScale = Mathf.Clamp((180f - Mathf.Abs(angle)) / 90f, 0.25f, 1f);
-				rightScale = Mathf.Clamp(Mathf.Abs((90f - Mathf.Abs(angle)) / 90f), 0.1f, 0.25f); 
-			} else {		  // Behind to the right
-				rightScale = Mathf.Clamp((180f - Mathf.Abs(angle)) / 90f, 0.25f, 1f);
-				leftScale = Mathf.Clamp(Mathf.Abs((90f - Mathf.Abs(angle)) / 90f), 0.1f, 0.25f); 
+		if (!inLearn2D && camera != null){
+			Vector3 fromWave = new Vector3(this.transform.position.x, camera.transform.position.y, this.transform.position.z);
+			float angle = Vector3.SignedAngle(fromWave - camera.transform.position, camera.transform.forward, camera.transform.up);
+			print("angle: " + angle);
+			if (Mathf.Abs(angle) < 90f) { // In front
+				if (angle > 0f) { // In front to left
+					leftScale = 1f;
+					rightScale = Mathf.Clamp((90f - Mathf.Abs(angle)) / 90f, 0.1f, 1f);
+				} else { 		 // In front to the right
+					leftScale = Mathf.Clamp((90f - Mathf.Abs(angle)) / 90f, 0.1f, 1f);
+					rightScale = 1f;
+				}
+			} else { // Behind
+				if (angle > 0f) { // Behind to the left
+					leftScale = Mathf.Clamp((180f - Mathf.Abs(angle)) / 90f, 0.25f, 1f);
+					rightScale = Mathf.Clamp(Mathf.Abs((90f - Mathf.Abs(angle)) / 90f), 0.1f, 0.25f); 
+				} else {		  // Behind to the right
+					rightScale = Mathf.Clamp((180f - Mathf.Abs(angle)) / 90f, 0.25f, 1f);
+					leftScale = Mathf.Clamp(Mathf.Abs((90f - Mathf.Abs(angle)) / 90f), 0.1f, 0.25f); 
+				}
 			}
 		}
-
-		// 	leftScale = 1f;
-		// 	rightScale = 1f;
-		// 	print("forward with left, right" + leftScale + rightScale);
-		// } else if (angle > 25f) { // Wave is to the left
-		// 	leftScale = Mathf.Clamp(angle % 90f / 90f, 0.75f, 1f);
-		// 	rightScale = Mathf.Clamp(angle % 90f / 180f, 0.1f, .5f);
-		// 	print("left with left, right" + leftScale + rightScale);
-		// }
-		// else { // Wave is to the right
-		// 	rightScale = Mathf.Clamp(Mathf.Abs(angle) % 90f / 90f, 0.75f, 1f);
-		// 	leftScale = Mathf.Clamp(Mathf.Abs(angle) % 90f / 180f, 0.1f, .5f);
 			print("left: " + leftScale + " right: " + rightScale);
-		// }
-		// print(angle);
-
-		// leftScale = Mathf.Clamp(leftScale, minScale, 1f);
-		// rightScale = Mathf.Clamp(rightScale, minScale, 1f);
 	}
 
 
@@ -171,35 +168,8 @@ public class AudioController : MonoBehaviour
 			}
 
 		}
-		// for (int j = 1; j  < waveCount; j++){
-		// 	waves[j].phase = waves[0].phase;
-		// }
 	}
 
-	// public void makeSawtooth () {
-	// 	return;
-	// }
-
-	// public void makeSquare () {
-	// 	waves[0].freq = freqConversion;
-	// 	waves[0].amp = 0.05f;
-	// 	// waves[1] = new Wave(freqConversion * 3f, .05f / 3f);
-	// 	waves[1].freq = freqConversion*3f;
-	// 	waves[1].amp = 0.05f/3f;
-	// 	// waves[2] = new Wave(freqConversion * 5f, .05f / 5f);
-	// 	waves[2].freq = freqConversion*5f;
-	// 	waves[2].amp = 0.05f/5f;
-	// 	waveCount = 3;
-	// 	for(int w = 0; w < waveCount; w++){
-	// 			// waves[w].updateIncr(waves[w].freq, freqScale);
-	// 		print("Wave: "+w+" Freq: " + waves[w].freq + " Amp: " + waves[w].amp);
-	// 	}
-	// 	// defaultShape = false;
-	// }
-
-	// public void makeTriangle () {
-	// 	return;		
-	// }
 
 	public void setEnabled(bool toSet=true)
 	{
