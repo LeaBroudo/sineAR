@@ -1,30 +1,78 @@
 1. Your team name:
 	sineAR
 
+
 2. Your names and UNIs:
 	Max Bennett     mbb2176
 	Lea Broudo      lrb2167
 	Sarah Leventhal sul2102
 
+
 3. Date of submission:
 	May 12th 2020
 
+
 4. Development platform(s):
 	2015 Macbook Pro MacOSX 10.15.3
-		Unity 2019.3.3f1 (also works w 2019.3.5f1)
 	2015 Macbook Pro MacOSX 10.15.4
-		Unity 2019.3.3f1 (also works w 2019.3.5f1)
+	Windows 10
+
+	Unity 2019.3.3f1 (also works w 2019.3.5f1)
 
 
 5. Mobile platforms, OS versions, and device names (and server platform, if any):
 	iPhone X, iOS 13.4.1
 	iPhone 11, iOS 13.4.1
+	Google Pixel, Android Version 10
+
+
+6. Project title:
+	sineAR
+
+
+7. Project directory overview:
+	Assets:
+		Bulk of implementation in here
+		Includes materials, scenes, scripts, assets, etc.
+
+	Library, Packages, QCAR, Temp, Project Settings:
+		Unity specific information
+
+
+8. Special Instructions, if any, for deploying your app:
+	Depending on the device deploying to, there is a small chance that some
+	player settings will need to be changed, but should be self-explanatory.
+	This is not different than deploying a standard Vuforia application.
+
+
+9. Special instructions, if any, for preparing your targets:
+	None. We used Vortex, Autumn, Acid, and Legos
+
+
+10. Video URL:
+	https://youtu.be/c0oPHvO_91k
+
+
+11. Missing features:
+	Nothing missing, but loads of future work included in written report
+	and in presentation.
+
+
+12. Bugs in your code and in any system you used:
+	Any limitations are outlined in more detail in the written report, but the
+	main bugs are: 
+		- Occasionally big changes in amplitude on some devices results in "popping" 
+		  sounds
+		- Going back and forth between panes in the Learn2D has a small bug with
+		  resetting the wave
+		- WiM occasionally shows different pos/orientation from real world given
+		  transformations from AR space to WiM space
+
+
+13. Asset sources:
+	From asset store:
+		TSF Toon shaders (for wands, knobs, etc.)
+		icons UI (for some UI elements)
 	
-6. Project title.
-7. Project directory overview.
-8. Special Instructions, if any, for deploying your app.
-9. Special instructions, if any, for preparing your targets.
-10. Video URL.
-11. Missing features.
-12. Bugs in your code and in any system you used
-13. Asset sources.
+
+
