@@ -167,7 +167,7 @@ public class AudioController : MonoBehaviour
 			data[i] *= ampScale * leftScale;
 
 			if (channels == 2) {
-				data[i + 1] = data[i] * rightScale; // mirror audio in two channel headphones
+				data[i + 1] = data[i] / leftScale * rightScale; // mirror audio in two channel headphones
 			}
 
 		}
